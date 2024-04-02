@@ -15,7 +15,7 @@ const container = (delay) => ({
 
 const Hero = () => {
   const [typeEffect] = useTypewriter({
-    words: ["Developper"],
+    words: ["Full Stack Developper"],
     loop: {},
     typeSpeed: 100,
     deleteSpeed: 40,
@@ -54,7 +54,7 @@ const Hero = () => {
               animate="visible"
               className="bg-gradient-to-r from-orange-700 via-slate-500 to-sky-50 bg-clip-text text-3xl tracking-tight text-transparent"
             >
-              Full Stack
+             I am 
               <span> {typeEffect}</span>
             </motion.span>
             <motion.p
