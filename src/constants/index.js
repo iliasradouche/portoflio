@@ -71,11 +71,11 @@ export const PROJECTS = [
   },
   {
     id: 4,
-    title: "Blogging Platform",
+    title: "Chat APP",
     image: project4,
     description:
-      "A platform for creating and publishing blog posts, with features like rich text editing, commenting, and user profiles.",
-    technologies: ["HTML", "CSS", "Vue.js", "Express", "mySQL"],
+      "A chat app name FOOTCHAT for Players who wanna play Football with strangers using the app to contact strangers who have the same objectif",
+    technologies: ["HTML", "CSS", "JavaScript", "Express", "MongoDB","Socket"],
   },
 ];
 
