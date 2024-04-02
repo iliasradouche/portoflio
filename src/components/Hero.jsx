@@ -15,7 +15,7 @@ const container = (delay) => ({
 
 const Hero = () => {
   const [typeEffect] = useTypewriter({
-    words: ["Full Stack Developper","UX/UI Designer"],
+    words: ["Full Stack Developper","UX/UI Designer","fertlan lol"],
     loop: {},
     typeSpeed: 100,
     deleteSpeed: 40,
