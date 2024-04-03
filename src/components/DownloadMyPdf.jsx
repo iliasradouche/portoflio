@@ -12,7 +12,7 @@ const container = (delay) => ({
 const DownloadPDFButton = () => {
   const handleDownload = () => {
     const link = document.createElement("a");
-    link.href = "http://localhost:5173/src/assets/cv/my_resume.pdf";
+    link.href = "/assets/cv/my_resume.pdf";
     link.download = "ILIAS_RADOUCHE_CV.pdf";
     document.body.appendChild(link);
     link.click();
