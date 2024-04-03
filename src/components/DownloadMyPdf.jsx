@@ -12,7 +12,7 @@ const container = (delay) => ({
 const DownloadPDFButton = () => {
   const handleDownload = () => {
     const link = document.createElement("a");
-    link.href = "/public/my_resume.pdf";
+    link.href = "https://drive.google.com/file/d/10eyHQi6vIn-E3cRW2t47eNeCqSDIA8sg/view?usp=drive_link";
     link.download = "ILIAS_RADOUCHE_CV.pdf";
     document.body.appendChild(link);
     link.click();
