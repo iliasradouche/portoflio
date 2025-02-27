@@ -32,30 +32,30 @@ export const EXPERIENCES = [
     year: "2020-2021",
     role: "Dropshipper",
     company: "Freelancer",
-    description: `Selling products for customers online on E-bay, Amazon , creating of Facebook ADS , Google ADS.`,
+    description: `Selling products for customers online on E-bay, Amazon, creating Facebook ADS, Google ADS.`,
     technologies: ["Ecomhunt", "Dropship.io", "AutoDS"],
   },
   {
     year: "2019-2020",
-    role: "Fiver,UP Work",
+    role: "Fiverr, Upwork",
     company: "Freelancer",
     description: `Seasoned Fiverr designer specializing in logos, flyers, and brochures with a year of creative excellence.`,
-    technologies: ["Canvas", "Figma"],
+    technologies: ["Canva", "Figma"],
   },
 ];
 
 export const PROJECTS = [
   {
     id: 1,
-    title: "Landing page",
+    title: "Landing Page",
     image: project1,
     description:
-      "A fully functional landing page for a company called Digital solution.",
+      "A fully functional landing page for a company called Digital Solution.",
     technologies: ["HTML", "CSS", "JavaScript"],
   },
   {
     id: 2,
-    title: "Mobile banking App UI/UX design",
+    title: "Mobile Banking App UI/UX Design",
     image: project2,
     description:
       "Effortless banking in your pocket: intuitive design, instant transfers, and secure transactions with a fresh, clean look.",
@@ -66,23 +66,22 @@ export const PROJECTS = [
     title: "Landing Page",
     image: project3,
     description:
-      "Landing Page for a Architect company for internal design called EcoSerinity",
+      "Landing Page for an Architect company for interior design called EcoSerenity",
     technologies: ["HTML", "Tailwind CSS", "JavaScript"],
   },
   {
     id: 4,
-    title: "Chat APP",
+    title: "Chat App",
     image: project4,
     description:
-      "A chat app name FOOTCHAT for Players who wanna play Football with strangers using the app to contact strangers who have the same objectif",
-    technologies: ["HTML", "CSS", "JavaScript", "Express", "MongoDB","Socket"],
+      "A chat app named FOOTCHAT for players who want to play football with strangers, using the app to contact others who have the same objective",
+    technologies: ["HTML", "CSS", "JavaScript", "Express", "MongoDB", "Socket"],
   },
 ];
 
 export const CONTACT = 
   {
-    address: "801 Gr Al ahd, Ennahda 1 Rabat, Maroc",
-    phone: "+212 6 37 70 74 61",
-    email: "iliasradouche@gmail.com",
+    address: "Rabat, Morocco",
+    phone: "+212 7 08 76 80 70",
+    email: "iliasradouche2@gmail.com",
   }
-
