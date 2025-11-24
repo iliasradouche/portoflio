@@ -23,142 +23,303 @@ const Tech = () => {
   
   // Define technologies with categories, names, icons, and proficiency levels
   const technologies = [
-    // Frontend
-    { 
-      id: "react", 
-      name: "React", 
-      icon: <RiReactjsLine className="text-sky-400" />,
-      category: "frontend",
-      proficiency: 95,
-      description: "Component-based UI library"
-    },
-    { 
-      id: "next", 
-      name: "Next.js", 
-      icon: <TbBrandNextjs />,
-      category: "frontend",
-      proficiency: 90,
-      description: "React framework for production"
-    },
-    { 
-      id: "javascript", 
-      name: "JavaScript", 
-      icon: <SiJavascript className="text-yellow-400" />,
-      category: "frontend",
-      proficiency: 95,
-      description: "Core web programming language"
-    },
-    { 
-      id: "typescript", 
-      name: "TypeScript", 
-      icon: <SiTypescript className="text-blue-500" />,
-      category: "frontend",
-      proficiency: 85,
-      description: "Typed JavaScript superset"
-    },
-    { 
-      id: "html", 
-      name: "HTML5", 
-      icon: <FaHtml5 className="text-orange-500" />,
-      category: "frontend",
-      proficiency: 98,
-      description: "Web markup language"
-    },
-    { 
-      id: "css", 
-      name: "CSS3", 
-      icon: <FaCss3Alt className="text-blue-500" />,
-      category: "frontend",
-      proficiency: 92,
-      description: "Web styling language"
-    },
-    { 
-      id: "tailwind", 
-      name: "Tailwind", 
-      icon: <SiTailwindcss className="text-cyan-400" />,
-      category: "frontend",
-      proficiency: 95,
-      description: "Utility-first CSS framework"
-    },
-    { 
-      id: "sass", 
-      name: "Sass", 
-      icon: <FaSass className="text-pink-500" />,
-      category: "frontend",
-      proficiency: 88,
-      description: "CSS preprocessor"
-    },
-    { 
-      id: "redux", 
-      name: "Redux", 
-      icon: <SiRedux className="text-purple-500" />,
-      category: "frontend",
-      proficiency: 85,
-      description: "State management library"
-    },
-    
-    // Backend
-    { 
-      id: "node", 
-      name: "Node.js", 
-      icon: <FaNodeJs className="text-green-500" />,
-      category: "backend",
-      proficiency: 90,
-      description: "JavaScript runtime"
-    },
-    { 
-      id: "express", 
-      name: "Express", 
-      icon: <SiExpress />,
-      category: "backend",
-      proficiency: 88,
-      description: "Minimal web framework for Node.js"
-    },
-    { 
-      id: "mongodb", 
-      name: "MongoDB", 
-      icon: <SiMongodb className="text-green-500" />,
-      category: "backend",
-      proficiency: 85,
-      description: "NoSQL database"
-    },
-    { 
-      id: "firebase", 
-      name: "Firebase", 
-      icon: <SiFirebase className="text-yellow-500" />,
-      category: "backend",
-      proficiency: 82,
-      description: "Backend-as-a-service platform"
-    },
-    
-    // Design
-    { 
-      id: "figma", 
-      name: "Figma", 
-      icon: <FaFigma className="text-purple-500" />,
-      category: "design",
-      proficiency: 90,
-      description: "Collaborative design tool"
-    },
-    
-    // Tools
-    { 
-      id: "vscode", 
-      name: "VS Code", 
-      icon: <SiVisualstudiocode className="text-blue-500" />,
-      category: "tools",
-      proficiency: 95,
-      description: "Code editor"
-    },
-    { 
-      id: "github", 
-      name: "GitHub", 
-      icon: <SiGithub />,
-      category: "tools",
-      proficiency: 92,
-      description: "Version control hosting"
-    }
-  ];
+  // Frontend
+  { 
+    id: "react", 
+    name: "React", 
+    icon: <RiReactjsLine className="text-sky-400" />,
+    category: "frontend",
+    proficiency: 95,
+    description: "Component-based UI library"
+  },
+  { 
+    id: "next", 
+    name: "Next.js", 
+    icon: <TbBrandNextjs />,
+    category: "frontend",
+    proficiency: 90,
+    description: "React framework for production"
+  },
+  { 
+    id: "vue", 
+    name: "Vue.js", 
+    icon: <SiJavascript className="text-green-400" />,
+    category: "frontend",
+    proficiency: 70,
+    description: "Progressive JavaScript framework"
+  },
+  { 
+    id: "angular", 
+    name: "Angular", 
+    icon: <SiJavascript className="text-red-500" />,
+    category: "frontend",
+    proficiency: 65,
+    description: "TypeScript-based framework"
+  },
+  { 
+    id: "zustand", 
+    name: "Zustand", 
+    icon: <SiJavascript className="text-yellow-300" />,
+    category: "frontend",
+    proficiency: 80,
+    description: "Lightweight state management"
+  },
+  { 
+    id: "javascript", 
+    name: "JavaScript", 
+    icon: <SiJavascript className="text-yellow-400" />,
+    category: "frontend",
+    proficiency: 95,
+    description: "Core web programming language"
+  },
+  { 
+    id: "typescript", 
+    name: "TypeScript", 
+    icon: <SiTypescript className="text-blue-500" />,
+    category: "frontend",
+    proficiency: 85,
+    description: "Typed JavaScript superset"
+  },
+  { 
+    id: "html", 
+    name: "HTML5", 
+    icon: <FaHtml5 className="text-orange-500" />,
+    category: "frontend",
+    proficiency: 98,
+    description: "Web markup language"
+  },
+  { 
+    id: "css", 
+    name: "CSS3", 
+    icon: <FaCss3Alt className="text-blue-500" />,
+    category: "frontend",
+    proficiency: 92,
+    description: "Web styling language"
+  },
+  { 
+    id: "tailwind", 
+    name: "TailwindCSS", 
+    icon: <SiTailwindcss className="text-cyan-400" />,
+    category: "frontend",
+    proficiency: 95,
+    description: "Utility-first CSS framework"
+  },
+
+  // Backend
+  { 
+    id: "node", 
+    name: "Node.js", 
+    icon: <FaNodeJs className="text-green-500" />,
+    category: "backend",
+    proficiency: 90,
+    description: "JavaScript runtime"
+  },
+  { 
+    id: "express", 
+    name: "Express", 
+    icon: <SiExpress />,
+    category: "backend",
+    proficiency: 88,
+    description: "Minimal web framework for Node.js"
+  },
+  { 
+    id: "nestjs", 
+    name: "NestJS", 
+    icon: <SiJavascript className="text-red-400" />,
+    category: "backend",
+    proficiency: 75,
+    description: "Progressive Node.js framework"
+  },
+  { 
+    id: "websockets", 
+    name: "WebSockets", 
+    icon: <SiJavascript className="text-purple-400" />,
+    category: "backend",
+    proficiency: 85,
+    description: "Real-time communication protocol"
+  },
+  { 
+    id: "webrtc", 
+    name: "WebRTC", 
+    icon: <SiJavascript className="text-teal-400" />,
+    category: "backend",
+    proficiency: 80,
+    description: "Real-time audio/video communication"
+  },
+  { 
+    id: "microservices", 
+    name: "Microservices", 
+    icon: <SiJavascript className="text-indigo-400" />,
+    category: "backend",
+    proficiency: 75,
+    description: "Distributed service architecture"
+  },
+
+  // Languages
+  { 
+    id: "python", 
+    name: "Python (Django)", 
+    icon: <FaNodeJs className="text-blue-400" />,
+    category: "language",
+    proficiency: 70,
+    description: "Backend development with Django REST"
+  },
+  { 
+    id: "java", 
+    name: "Java", 
+    icon: <FaNodeJs className="text-red-400" />,
+    category: "language",
+    proficiency: 65,
+    description: "Object-oriented programming language"
+  },
+
+  // Databases
+  { 
+    id: "mongodb", 
+    name: "MongoDB", 
+    icon: <SiMongodb className="text-green-500" />,
+    category: "database",
+    proficiency: 85,
+    description: "NoSQL document database"
+  },
+  { 
+    id: "postgresql", 
+    name: "PostgreSQL", 
+    icon: <SiJavascript className="text-blue-400" />,
+    category: "database",
+    proficiency: 80,
+    description: "Relational SQL database"
+  },
+  { 
+    id: "mysql", 
+    name: "MySQL", 
+    icon: <SiJavascript className="text-blue-500" />,
+    category: "database",
+    proficiency: 75,
+    description: "Relational database system"
+  },
+  { 
+    id: "prisma", 
+    name: "Prisma ORM", 
+    icon: <SiJavascript className="text-purple-500" />,
+    category: "database",
+    proficiency: 80,
+    description: "Type-safe ORM for Node.js"
+  },
+
+  // Cloud / Platforms
+  { 
+    id: "aws", 
+    name: "AWS", 
+    icon: <SiFirebase className="text-orange-400" />,
+    category: "cloud",
+    proficiency: 70,
+    description: "Cloud computing platform"
+  },
+  { 
+    id: "gcp", 
+    name: "GCP", 
+    icon: <SiFirebase className="text-red-400" />,
+    category: "cloud",
+    proficiency: 65,
+    description: "Google Cloud Platform"
+  },
+  { 
+    id: "firebase", 
+    name: "Firebase", 
+    icon: <SiFirebase className="text-yellow-500" />,
+    category: "cloud",
+    proficiency: 82,
+    description: "Auth, DB, hosting & serverless tools"
+  },
+  { 
+    id: "railway", 
+    name: "Railway", 
+    icon: <SiJavascript className="text-gray-300" />,
+    category: "cloud",
+    proficiency: 70,
+    description: "App hosting & deployment"
+  },
+
+  // DevOps & Tools
+  { 
+    id: "docker", 
+    name: "Docker", 
+    icon: <SiJavascript className="text-blue-400" />,
+    category: "devops",
+    proficiency: 80,
+    description: "Containerization platform"
+  },
+  { 
+    id: "kubernetes", 
+    name: "Kubernetes", 
+    icon: <SiJavascript className="text-blue-500" />,
+    category: "devops",
+    proficiency: 60,
+    description: "Container orchestration"
+  },
+  { 
+    id: "github_actions", 
+    name: "GitHub Actions", 
+    icon: <SiGithub />,
+    category: "devops",
+    proficiency: 85,
+    description: "CI/CD automation"
+  },
+  { 
+    id: "gitlab_ci", 
+    name: "GitLab CI", 
+    icon: <SiGithub className="text-orange-400" />,
+    category: "devops",
+    proficiency: 75,
+    description: "Continuous integration pipeline"
+  },
+  { 
+    id: "linux", 
+    name: "Linux", 
+    icon: <SiGithub className="text-green-400" />,
+    category: "tools",
+    proficiency: 80,
+    description: "Operating system & CLI"
+  },
+  { 
+    id: "powershell", 
+    name: "PowerShell", 
+    icon: <SiGithub className="text-blue-300" />,
+    category: "tools",
+    proficiency: 70,
+    description: "Automation & scripting"
+  },
+
+  // Design
+  { 
+    id: "figma", 
+    name: "Figma", 
+    icon: <FaFigma className="text-purple-500" />,
+    category: "design",
+    proficiency: 90,
+    description: "Collaborative design tool"
+  },
+
+  // Tools (General)
+  { 
+    id: "vscode", 
+    name: "VS Code", 
+    icon: <SiVisualstudiocode className="text-blue-500" />,
+    category: "tools",
+    proficiency: 95,
+    description: "Code editor"
+  },
+  { 
+    id: "github", 
+    name: "GitHub", 
+    icon: <SiGithub />,
+    category: "tools",
+    proficiency: 92,
+    description: "Version control hosting"
+  }
+];
+
   
   // Filter technologies by active category
   const filteredTechnologies = technologies.filter(
@@ -203,7 +364,7 @@ const Tech = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative overflow-hidden border-b border-neutral-800 py-16 lg:py-24"
+      className="relative overflow-hidden border-b border-neutral-800 py-10 lg:py-16"
       id="technologies"
     >
       {/* Background elements */}
@@ -216,9 +377,9 @@ const Tech = () => {
           variants={titleVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="mb-12 text-center"
+          className="mb-8 text-center"
         >
-          <h2 className="inline-block text-4xl font-light tracking-tight lg:text-5xl">
+          <h2 className="inline-block text-3xl font-light tracking-tight lg:text-4xl">
             Technologies
             <span className="font-medium text-neutral-400"> I Work With</span>
           </h2>
@@ -230,7 +391,7 @@ const Tech = () => {
         
         {/* Category Tabs */}
         <motion.div 
-          className="mx-auto mb-12 flex max-w-md flex-wrap justify-center gap-2 sm:gap-4"
+          className="mx-auto mb-8 flex max-w-md flex-wrap justify-center gap-2 sm:gap-4"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -260,7 +421,7 @@ const Tech = () => {
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+          className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
         >
           {filteredTechnologies.map((tech) => (
             <motion.div
@@ -270,10 +431,10 @@ const Tech = () => {
                 y: -5, 
                 boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)"
               }}
-              className="flex flex-col items-center rounded-xl border border-neutral-800 bg-neutral-900/50 p-4 backdrop-blur-sm transition-colors hover:border-neutral-700"
+              className="flex flex-col items-center rounded-xl border border-neutral-800 bg-neutral-900/50 p-3 backdrop-blur-sm transition-colors hover:border-neutral-700"
             >
               {/* Icon */}
-              <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full border border-neutral-800 bg-neutral-900 text-5xl">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full border border-neutral-800 bg-neutral-900 text-3xl">
                 {tech.icon}
               </div>
               
@@ -289,7 +450,7 @@ const Tech = () => {
                   <span>Proficiency</span>
                   <span>{tech.proficiency}%</span>
                 </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-neutral-800">
+                <div className="h-1 w-full overflow-hidden rounded-full bg-neutral-800">
                   <motion.div 
                     className="h-full rounded-full bg-gradient-to-r from-orange-500 to-sky-500"
                     initial={{ width: 0 }}

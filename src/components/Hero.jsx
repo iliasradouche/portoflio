@@ -13,7 +13,7 @@ const Hero = () => {
   const [typeEffect] = useTypewriter({
     words: [
       "Full Stack Developer",
-      "UX/UI Designer",
+      "Backend Developer",
       "Problem Solver",
       "Creative Thinker"
     ],
@@ -160,8 +160,6 @@ const Hero = () => {
               {[
                 { icon: "github", url: "#" },
                 { icon: "linkedin", url: "#" },
-                { icon: "twitter", url: "#" },
-                { icon: "dribbble", url: "#" }
               ].map((social, index) => (
                 <motion.a
                   key={social.icon}

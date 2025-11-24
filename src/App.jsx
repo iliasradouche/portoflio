@@ -4,12 +4,21 @@ import Experience from "./components/Experience";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
 import Projects from "./components/Projects";
+import Certificates from "./components/Certificates";
 import Tech from "./components/Tech";
 import ParticlesBackground from "./components/ParticlesBackground";
+import BackToTop from "./components/BackToTop";
 
 const App = () => {
   return (
     <div className="relative overflow-x-hidden text-neutral-300 antialiased selection:bg-orange-300 selection:text-orange-900">
+      {/* Skip to content for accessibility */}
+      <a
+        href="#main-content"
+        className="fixed left-4 top-4 z-[1000] -translate-y-32 opacity-0 focus:translate-y-0 focus:opacity-100 rounded-md border border-neutral-700 bg-neutral-900 px-4 py-2 text-white shadow"
+      >
+        Skip to content
+      </a>
       {/* Background elements */}
       <div className="fixed top-0 -z-10 h-full w-full">
         <div className="relative h-full w-full bg-black">
@@ -21,15 +30,19 @@ const App = () => {
       {/* Particles positioned between background and content */}
       <ParticlesBackground />
 
-      <div className="relative z-10 container mx-auto px-10">
+      <div id="main-content" className="relative z-10 container mx-auto px-10">
         <Navbar />
         <Hero />
         <About />
         <Tech />
         <Experience />
         <Projects />
+        <Certificates />
         <Contactme />
       </div>
+
+      {/* Floating back-to-top button */}
+      <BackToTop />
     </div>
   );
 };

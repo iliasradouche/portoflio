@@ -9,7 +9,8 @@ export default {
       const newUtilities = {
         ".scrollbar-thin": {
           scrollbarWidth: "thin",
-          scrollbarcolor: "rgb(31 29 29) white",
+          // Firefox-specific custom scrollbar colors
+          "scrollbar-color": "rgb(31 29 29) white",
         },
         ".scrollbar-webkit": {
           "&::-webkit-scrollbar": {

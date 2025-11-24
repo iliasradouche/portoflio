@@ -55,9 +55,9 @@ const DownloadPDFButton = () => {
     setIsClicked(true);
     setTimeout(() => setIsClicked(false), 600);
     
-    // Create download link
+    // Create download link from public folder (served at root)
     const link = document.createElement("a");
-    link.href = "https://drive.usercontent.google.com/download?id=1wi-v6hSzBGqJsT3zmt5odiO2CictL0dA&export=download&authuser=0&confirm=t&uuid=af001b80-6add-45d4-8c7f-75031bd8a8e1&at=APZUnTVwR7ZyRVoAPK3eGJ_VPX1X:1712158192474";
+    link.href = "/my_resume.pdf";
     link.download = "ILIAS_RADOUCHE_CV.pdf";
     document.body.appendChild(link);
     link.click();

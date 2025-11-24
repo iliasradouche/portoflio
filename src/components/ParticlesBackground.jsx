@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 
@@ -21,6 +21,47 @@ const ParticlesBackground = () => {
     console.log("Particles container loaded:", container);
   }, []);
 
+  const prefersReduced =
+    typeof window !== "undefined" &&
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Always call hooks unconditionally in every render to avoid React hook order errors
+  const options = useMemo(() => ({
+    fullScreen: false,
+    background: { color: { value: "transparent" } },
+    fpsLimit: 60,
+    interactivity: {
+      events: {
+        onClick: { enable: !prefersReduced, mode: "push" },
+        onHover: { enable: !prefersReduced, mode: "repulse", distance: 100 },
+        resize: true,
+      },
+      modes: {
+        push: { quantity: 3 },
+        repulse: { distance: 100, duration: 0.4 },
+      },
+    },
+    particles: {
+      color: { value: ["#ea580c", "#0ea5e9", "#f97316"] },
+      links: { color: "#ffffff", distance: 150, enable: true, opacity: 0.15, width: 1 },
+      collisions: { enable: false },
+      move: {
+        direction: "none",
+        enable: true,
+        outModes: { default: "bounce" },
+        random: true,
+        speed: prefersReduced ? 1 : 2,
+        straight: false,
+      },
+      number: { density: { enable: true, area: 800 }, value: prefersReduced ? 20 : 30 },
+      opacity: { value: 0.7 },
+      shape: { type: "circle" },
+      size: { value: { min: 1, max: 3 } },
+    },
+    detectRetina: true,
+  }), [prefersReduced]);
+
   if (!isLoaded) return null;
 
   return (
@@ -29,80 +70,7 @@ const ParticlesBackground = () => {
         id="tsparticles"
         init={particlesInit}
         loaded={particlesLoaded}
-        options={{
-          fullScreen: false, // Changed to false so we control container
-          background: {
-            color: {
-              value: "transparent",
-            },
-          },
-          fpsLimit: 60,
-          interactivity: {
-            events: {
-              onClick: {
-                enable: true,
-                mode: "push",
-              },
-              onHover: {
-                enable: true,
-                mode: "repulse",
-                distance: 100,
-              },
-              resize: true,
-            },
-            modes: {
-              push: {
-                quantity: 4,
-              },
-              repulse: {
-                distance: 100,
-                duration: 0.4,
-              },
-            },
-          },
-          particles: {
-            color: {
-              value: ["#ea580c", "#0ea5e9", "#f97316"],
-            },
-            links: {
-              color: "#ffffff",
-              distance: 150,
-              enable: true,
-              opacity: 0.2,
-              width: 1,
-            },
-            collisions: {
-              enable: true,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: {
-                default: "bounce",
-              },
-              random: true,
-              speed: 2,
-              straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-                area: 800,
-              },
-              value: 60, // Increased for visibility
-            },
-            opacity: {
-              value: 0.8, // Increased for visibility
-            },
-            shape: {
-              type: "circle",
-            },
-            size: {
-              value: { min: 1, max: 3 },
-            },
-          },
-          detectRetina: true,
-        }}
+        options={options}
         style={{
           position: "absolute",
           width: "100%",

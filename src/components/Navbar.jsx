@@ -8,6 +8,7 @@ import { HiMenu, HiX } from "react-icons/hi";
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
   
   // Update navbar style on scroll
   useEffect(() => {
@@ -23,12 +24,47 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   
+  // Observe sections to highlight active nav link
+  useEffect(() => {
+    const ids = ["about", "experience", "projects", "certificates", "contact"];
+    const elements = ids
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.6 }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+
+    // Keep 'Home' active near the very top
+    const handleTop = () => {
+      if (window.scrollY < 100) {
+        setActiveSection("home");
+      }
+    };
+    window.addEventListener("scroll", handleTop);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleTop);
+    };
+  }, []);
+  
   // Navigation links
   const navLinks = [
     { name: "Home", href: "#" },
     { name: "About", href: "#about" },
     { name: "Experience", href: "#experience" },
     { name: "Projects", href: "#projects" },
+    { name: "Certificates", href: "#certificates" },
     { name: "Contact", href: "#contact" }
   ];
   
@@ -98,7 +134,16 @@ const Navbar = () => {
               <li key={link.name}>
                 <a
                   href={link.href}
-                  className="rounded-full px-4 py-2 text-sm font-medium text-neutral-300 transition-colors hover:bg-neutral-800/50 hover:text-white"
+                  className={`rounded-full px-4 py-2 text-sm font-medium transition-colors hover:bg-neutral-800/50 ${
+                    (link.href === "#" && activeSection === "home") ||
+                    (link.href !== "#" && activeSection === link.href.replace("#", ""))
+                      ? "bg-neutral-800/70 text-white"
+                      : "text-neutral-300 hover:text-white"
+                  }`}
+                  aria-current={(link.href === "#" && activeSection === "home") ||
+                    (link.href !== "#" && activeSection === link.href.replace("#", ""))
+                      ? "page"
+                      : undefined}
                 >
                   {link.name}
                 </a>
@@ -159,7 +204,16 @@ const Navbar = () => {
                   <li key={link.name}>
                     <a
                       href={link.href}
-                      className="block px-6 py-3 text-neutral-300 transition-colors hover:bg-neutral-800 hover:text-white"
+                      className={`block px-6 py-3 transition-colors hover:bg-neutral-800 ${
+                        (link.href === "#" && activeSection === "home") ||
+                        (link.href !== "#" && activeSection === link.href.replace("#", ""))
+                          ? "text-white"
+                          : "text-neutral-300 hover:text-white"
+                      }`}
+                      aria-current={(link.href === "#" && activeSection === "home") ||
+                        (link.href !== "#" && activeSection === link.href.replace("#", ""))
+                          ? "page"
+                          : undefined}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {link.name}

@@ -8,4 +8,26 @@
 :root{
     font-family:"Inter", sans-serif;
 }
+html {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+/* Offset anchored sections for the fixed navbar */
+:root {
+    --navbar-offset: 6rem; /* adjust to actual header height */
+}
+
+#about,
+#experience,
+#projects,
+#certificates,
+#contact {
+  scroll-margin-top: var(--navbar-offset);
+}
  
