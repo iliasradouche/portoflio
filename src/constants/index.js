@@ -5,6 +5,8 @@ import project4 from "../assets/projects/project-4.png";
 import medsafe from "../assets/projects/medsafe.png"
 import medsafe2 from "../assets/projects/medsafe1.png"
 import secret from "../assets/projects/secret.png"
+import gym1 from "../assets/projects/gym1.png"
+import gym2 from "../assets/projects/gym2.png"
 
 
 
@@ -153,7 +155,7 @@ export const PROJECTS = [
     description:
       "A chat app for football players to connect with others who want to play football with strangers.",
     technologies: ["HTML", "CSS", "JavaScript", "Express", "MongoDB", "Socket"],
-    category: "fullstack",
+    category: "frontend",
     featured: true,
     liveLink: null,
     codeLink: null,
@@ -208,6 +210,18 @@ export const PROJECTS = [
     technologies: ["React Native", "Node.js", "ChatGPT API"],
     category: "fullstack",
     liveLink: null,
+    codeLink: null,
+  },
+  {
+    id: 9,
+    title: "Gym Landing page",
+    image: gym1,
+    images: [gym1, gym2],
+    description:
+      "Modern, responsive landing page for a fitness gym featuring class schedules, trainer profiles, and membership sign-up.",
+    technologies: ["React", "Node.js"],
+    category: "frontend",
+    liveLink: "https://newgymdesign.netlify.app/",
     codeLink: null,
   },
 ];
