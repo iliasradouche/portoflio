@@ -2,6 +2,11 @@ import project1 from "../assets/projects/project-1.png";
 import project2 from "../assets/projects/project-2.png";
 import project3 from "../assets/projects/project-3.png";
 import project4 from "../assets/projects/project-4.png";
+import medsafe from "../assets/projects/medsafe.png"
+import medsafe2 from "../assets/projects/medsafe1.png"
+import secret from "../assets/projects/secret.png"
+
+
 
 export const HERO_CONTENT = `I'm a passionate, reliable, and industrious individual. My experience across various projects has honed my adaptability, making me a seasoned team player. I thrive in collaborative settings and am equally adept at taking initiative.`;
 
@@ -107,88 +112,103 @@ export const PROJECTS = [
     id: 1,
     title: "Landing Page",
     image: project1,
+    images: [project1],
     description:
       "A fully functional landing page for a company called Digital Solution.",
     technologies: ["HTML", "CSS", "JavaScript"],
     category: "frontend",
     featured: true,
+    liveLink: "https://digital-solutions-test.netlify.app/",
+    codeLink: "https://github.com/iliasradouche/P.DigitalSolutions",
   },
   {
     id: 2,
     title: "Mobile Banking App UI/UX Design",
     image: project2,
+    images: [project2],
     description:
       "Effortless banking in your pocket: intuitive design, instant transfers, and secure transactions with a fresh, clean look.",
     technologies: ["Figma", "Miro"],
     category: "design",
+    liveLink: null,
+    codeLink: null,
   },
   {
     id: 3,
-    title: "Landing Page",
+    title: "EcoSerinity",
     image: project3,
+    images: [project3],
     description:
       "Landing Page for an Architect company for interior design called EcoSerenity",
     technologies: ["HTML", "Tailwind CSS", "JavaScript"],
     category: "frontend",
+    liveLink: "https://eco-serenity.netlify.app/",
+    codeLink: "https://github.com/iliasradouche/Eco-Serenity",
   },
   {
     id: 4,
     title: "Chat App (FOOTCHAT)",
     image: project4,
+    images: [project4],
     description:
       "A chat app for football players to connect with others who want to play football with strangers.",
     technologies: ["HTML", "CSS", "JavaScript", "Express", "MongoDB", "Socket"],
     category: "fullstack",
     featured: true,
+    liveLink: null,
+    codeLink: null,
   },
 
   // NEW PROJECTS FROM CV
   {
     id: 5,
     title: "Med-Safe",
-    image: project1,
+    image: medsafe2,
+    images: [medsafe, medsafe2],
     description:
       "Medication management platform supporting prescription tracking and ensuring safe, consistent dosage adherence.",
     technologies: ["React", "Next.js", "Node.js", "MongoDB"],
     category: "fullstack",
     featured: true,
+    liveLink: "https://medsafe-dr.netlify.app/",
+    codeLink: "https://github.com/iliasradouche/MedSafe",
   },
   {
     id: 6,
     title: "MovieRec",
-    image: project2,
+    image: secret,
+    images: [secret],
     description:
       "Movie recommendation engine combining a Python API with a React UI for personalized recommendations.",
     technologies: ["Python", "Django REST", "React", "PostgreSQL"],
     category: "fullstack",
+    liveLink: "project-nexus-alx.netlify.app",
+    codeLink: "https://github.com/iliasradouche/alx-project-nexus",
   },
   {
     id: 7,
     title: "Veterinary SaaS Platform",
-    image: project3,
+    image: secret,
+    images: [secret],
     description:
       "Full SaaS solution for veterinary clinics including online booking, client management, and video consultations.",
     technologies: ["Next.js", "Node.js", "WebRTC", "Socket.IO", "MongoDB"],
     category: "fullstack",
     featured: true,
+    liveLink: null,
+    codeLink: null,
   },
   {
     id: 8,
-    title: "Football-Chat",
-    image: project4,
-    description:
-      "Real-time messaging application built for football players using Socket.IO for fast communication.",
-    technologies: ["React", "Node.js", "Socket.IO", "MongoDB"],
-    category: "fullstack",
-  },
-  {
-    id: 9,
     title: "Ai-Calorie",
-    image: project1,
+    image: secret,
+    images: [secret],
     description:
       "Calorie estimation mobile app using ChatGPT API for real-time food recognition and nutritional analysis.",
     technologies: ["React Native", "Node.js", "ChatGPT API"],
     category: "fullstack",
+    liveLink: null,
+    codeLink: null,
   },
 ];
 

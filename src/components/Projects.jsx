@@ -1,10 +1,11 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { PROJECTS } from "../constants";
 import { HiX, HiExternalLink, HiCode, HiArrowRight } from "react-icons/hi";
 
 function Project() {
   const [selectedId, setSelectedId] = useState(null);
+  const [carouselIndex, setCarouselIndex] = useState(0);
   const [filter, setFilter] = useState("all");
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.2 });
@@ -94,6 +95,11 @@ function Project() {
     active: { opacity: 1, scale: 1 }
   };
 
+  // Reset carousel index when changing selected project
+  useEffect(() => {
+    setCarouselIndex(0);
+  }, [selectedId]);
+
   return (
     <section 
       ref={sectionRef}
@@ -180,11 +186,37 @@ function Project() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/20 to-transparent opacity-80"></div>
                   
-                  {/* View details button */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  {/* Overlay actions: View, Live, Code */}
+                  <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                     <span className="rounded-full bg-white/10 px-5 py-2 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20">
                       View Details
                     </span>
+                    {project.liveLink && (
+                      <a
+                        href={project.liveLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+                        title="View Live"
+                        aria-label={`Open ${project.title} live site`}
+                      >
+                        <HiExternalLink /> Live
+                      </a>
+                    )}
+                    {project.codeLink && (
+                      <a
+                        href={project.codeLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+                        title="View Code"
+                        aria-label={`Open ${project.title} source code`}
+                      >
+                        <HiCode /> Code
+                      </a>
+                    )}
                   </div>
                 </div>
                 
@@ -221,7 +253,33 @@ function Project() {
                   </div>
                   
                   {/* Action links */}
-                  <div className="flex items-center justify-end space-x-4 text-sm text-neutral-500">
+                  <div className="flex items-center justify-between text-sm text-neutral-500">
+                    <div className="flex items-center gap-3">
+                      {project.liveLink && (
+                        <a
+                          href={project.liveLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-1 rounded-full border border-neutral-700 bg-neutral-800/50 px-3 py-1 text-neutral-300 transition hover:border-neutral-600 hover:bg-neutral-700 hover:text-white"
+                          aria-label={`Open ${project.title} live site`}
+                        >
+                          <HiExternalLink /> Live
+                        </a>
+                      )}
+                      {project.codeLink && (
+                        <a
+                          href={project.codeLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-1 rounded-full border border-neutral-700 bg-neutral-800/50 px-3 py-1 text-neutral-300 transition hover:border-neutral-600 hover:bg-neutral-700 hover:text-white"
+                          aria-label={`Open ${project.title} repository`}
+                        >
+                          <HiCode /> Code
+                        </a>
+                      )}
+                    </div>
                     <motion.span
                       whileHover={{ scale: 1.05, color: "#f97316" }}
                       className="flex items-center font-medium"
@@ -271,30 +329,74 @@ function Project() {
                     
                     {/* Modal content */}
                     <div>
-                      {/* Project image */}
+                      {/* Project images carousel with overlay */}
                       <div className="relative h-64 w-full sm:h-80 md:h-96">
-                        <img
-                          src={project.image}
-                          alt={project.title}
-                          decoding="async"
-                          sizes="100vw"
-                          className="h-full w-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-transparent to-transparent"></div>
-                        
-                        {/* Project title and featured badge */}
-                        <div className="absolute bottom-0 left-0 w-full p-6">
-                          <div className="flex flex-wrap items-center justify-between gap-4">
-                            <h2 className="text-2xl font-bold sm:text-3xl md:text-4xl">
-                              {project.title}
-                            </h2>
-                            {project.featured && (
-                              <span className="rounded-full bg-gradient-to-r from-orange-500 to-sky-500 px-4 py-1 text-xs font-medium text-white">
-                                Featured Project
-                              </span>
-                            )}
-                          </div>
-                        </div>
+                        {(() => {
+                          const images = Array.isArray(project.images) && project.images.length
+                            ? project.images
+                            : [project.image];
+                          const currentSrc = images[Math.min(carouselIndex, images.length - 1)];
+                          return (
+                            <>
+                              <img
+                                src={currentSrc}
+                                alt={`${project.title} screenshot ${carouselIndex + 1}`}
+                                decoding="async"
+                                sizes="100vw"
+                                className="h-full w-full object-cover"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-transparent to-transparent"></div>
+                              {/* Carousel controls */}
+                              {images.length > 1 && (
+                                <div className="absolute inset-0 flex items-center justify-between p-4">
+                                  <button
+                                    onClick={() => setCarouselIndex((prev) => (prev - 1 + images.length) % images.length)}
+                                    className="rounded-full bg-neutral-800/70 p-2 text-white backdrop-blur-sm transition hover:bg-neutral-700"
+                                    aria-label="Previous image"
+                                  >
+                                    ‹
+                                  </button>
+                                  <button
+                                    onClick={() => setCarouselIndex((prev) => (prev + 1) % images.length)}
+                                    className="rounded-full bg-neutral-800/70 p-2 text-white backdrop-blur-sm transition hover:bg-neutral-700"
+                                    aria-label="Next image"
+                                  >
+                                    ›
+                                  </button>
+                                </div>
+                              )}
+                              {/* Dots */}
+                              {images.length > 1 && (
+                                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 transform">
+                                  <div className="flex items-center gap-2">
+                                    {images.map((_, idx) => (
+                                      <button
+                                        key={`dot-${idx}`}
+                                        onClick={() => setCarouselIndex(idx)}
+                                        className={`${idx === carouselIndex ? "bg-white" : "bg-neutral-500"} h-2 w-2 rounded-full transition`}
+                                        aria-label={`Go to image ${idx + 1}`}
+                                      ></button>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                              {/* Title & featured badge overlay */}
+                              <div className="absolute bottom-0 left-0 w-full p-6">
+                                <div className="flex flex-wrap items-center justify-between gap-4">
+                                  <h2 className="text-2xl font-bold sm:text-3xl md:text-4xl">
+                                    {project.title}
+                                  </h2>
+                                  {project.featured && (
+                                    <span className="rounded-full bg-gradient-to-r from-orange-500 to-sky-500 px-4 py-1 text-xs font-medium text-white">
+                                      Featured Project
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </>
+                          );
+                        })()}
+                      </div>
                       </div>
                       
                       {/* Project details */}
@@ -363,7 +465,6 @@ function Project() {
                           )}
                         </div>
                       </div>
-                    </div>
                   </motion.div>
                 ))}
               </motion.div>
@@ -379,7 +480,7 @@ function Project() {
           className="mt-12 text-center"
         >
           <a 
-            href="https://github.com/yourusername" 
+            href={"https://github.com/iliasradouche"} 
             target="_blank" 
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-full border border-neutral-700 bg-neutral-900/50 px-6 py-3 text-sm font-medium text-neutral-300 transition hover:bg-neutral-800 hover:text-white"
