@@ -7,6 +7,8 @@ import medsafe2 from "../assets/projects/medsafe1.png"
 import secret from "../assets/projects/secret.png"
 import gym1 from "../assets/projects/gym1.png"
 import gym2 from "../assets/projects/gym2.png"
+import jobtrack from "../assets/projects/jobtrack.png"
+import jobtrack2 from "../assets/projects/jobtrack2.png"
 
 
 
@@ -222,6 +224,18 @@ export const PROJECTS = [
     technologies: ["React", "Node.js"],
     category: "frontend",
     liveLink: "https://newgymdesign.netlify.app/",
+    codeLink: null,
+  },
+  {
+    id: 10,
+    title: "Job Tracking App",
+    image: jobtrack,
+    images: [jobtrack, jobtrack2],
+    description:
+      "Job tracking application for job seekers to manage their applications, track interviews, and stay organized.",
+    technologies: ["React", "Node.js", "clerk"],
+    category: "fullstack",
+    liveLink: "https://jobtrackingapplication.netlify.app/",
     codeLink: null,
   },
 ];
