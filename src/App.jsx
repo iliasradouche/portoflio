@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import About from "./components/About";
 import Contactme from "./components/Contactme";
 import Experience from "./components/Experience";
@@ -8,8 +9,21 @@ import Certificates from "./components/Certificates";
 import Tech from "./components/Tech";
 import ParticlesBackground from "./components/ParticlesBackground";
 import BackToTop from "./components/BackToTop";
+import logoUrl from "./assets/logo.svg";
 
 const App = () => {
+  useEffect(() => {
+    // Ensure favicon uses the project logo from src/assets
+    const existing = document.querySelector('link[rel="icon"]');
+    const link = existing || document.createElement('link');
+    link.setAttribute('rel', 'icon');
+    link.setAttribute('type', 'image/svg+xml');
+    link.setAttribute('href', logoUrl);
+    if (!existing) {
+      document.head.appendChild(link);
+    }
+  }, []);
+
   return (
     <div className="relative overflow-x-hidden text-neutral-300 antialiased selection:bg-orange-300 selection:text-orange-900">
       {/* Skip to content for accessibility */}
