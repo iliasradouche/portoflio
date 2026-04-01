@@ -1,462 +1,181 @@
 import { useState, useRef } from "react";
-import { RiReactjsLine } from "react-icons/ri";
+import { motion, useInView } from "motion/react";
+import {
+  RiReactjsLine,
+} from "react-icons/ri";
 import { TbBrandNextjs } from "react-icons/tb";
-import { SiMongodb, SiJavascript, SiTypescript, SiExpress, SiTailwindcss, SiFirebase, SiRedux, SiVisualstudiocode, SiGithub } from "react-icons/si";
-import { FaNodeJs, FaHtml5, FaCss3Alt, FaFigma, FaSass } from "react-icons/fa";
-import { motion, useInView } from "framer-motion";
+import {
+  SiMongodb, SiJavascript, SiTypescript, SiExpress,
+  SiTailwindcss, SiFirebase, SiGithub, SiNodedotjs,
+  SiDocker, SiPostgresql, SiFigma, SiPython,
+  SiWebrtc, SiLinux, SiSass, SiAngular, SiVuedotjs,
+  SiNestjs,
+} from "react-icons/si";
+import { FaHtml5, FaCss3Alt } from "react-icons/fa";
+import { TECH_CATEGORIES, TECHNOLOGIES } from "../data";
+
+// Map tech id → icon (some entries share icons where specific ones don't exist)
+const ICON_MAP = {
+  react:      <RiReactjsLine  className="text-sky-400"    />,
+  next:       <TbBrandNextjs                               />,
+  javascript: <SiJavascript   className="text-yellow-400" />,
+  typescript: <SiTypescript   className="text-blue-400"   />,
+  html:       <FaHtml5        className="text-orange-500" />,
+  css:        <FaCss3Alt      className="text-blue-500"   />,
+  tailwind:   <SiTailwindcss  className="text-cyan-400"   />,
+  zustand:    <SiJavascript   className="text-yellow-300" />,
+  vue:        <SiVuedotjs     className="text-green-400"  />,
+  angular:    <SiAngular      className="text-red-500"    />,
+  node:       <SiNodedotjs    className="text-green-500"  />,
+  express:    <SiExpress                                   />,
+  nestjs:     <SiNestjs       className="text-red-500"    />,
+  websockets: <SiJavascript   className="text-purple-400" />,
+  webrtc:     <SiWebrtc       className="text-teal-400"   />,
+  mongodb:    <SiMongodb      className="text-green-500"  />,
+  postgresql: <SiPostgresql   className="text-blue-400"   />,
+  firebase:   <SiFirebase     className="text-yellow-500" />,
+  docker:     <SiDocker       className="text-blue-400"   />,
+  python:     <SiPython       className="text-blue-300"   />,
+  figma:      <SiFigma        className="text-purple-500" />,
+  sass:       <SiSass         className="text-pink-400"   />,
+  github:     <SiGithub                                    />,
+  vscode:     <SiJavascript   className="text-blue-500"   />,
+  gh_actions: <SiGithub       className="text-[#00ff41]"  />,
+  linux:      <SiLinux        className="text-yellow-300" />,
+  aws:        <SiJavascript   className="text-orange-400" />,
+  gcp:        <SiFirebase     className="text-red-400"    />,
+};
+
+const CONTAINER = {
+  hidden:  { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.06, delayChildren: 0.2 } },
+};
+
+const ITEM = {
+  hidden:  { y: 20, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { duration: 0.4 } },
+};
 
 const Tech = () => {
-  // Reference for section to detect when in view
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: false, amount: 0.3 });
-  
-  // State for the currently selected technology category
-  const [activeCategory, setActiveCategory] = useState("frontend");
-  
-  // Define technology categories and their technologies
-  const techCategories = [
-    { id: "frontend", label: "Frontend" },
-    { id: "backend", label: "Backend" },
-    { id: "design", label: "Design" },
-    { id: "tools", label: "Tools" }
-  ];
-  
-  // Define technologies with categories, names, icons, and proficiency levels
-  const technologies = [
-  // Frontend
-  { 
-    id: "react", 
-    name: "React", 
-    icon: <RiReactjsLine className="text-sky-400" />,
-    category: "frontend",
-    proficiency: 95,
-    description: "Component-based UI library"
-  },
-  { 
-    id: "next", 
-    name: "Next.js", 
-    icon: <TbBrandNextjs />,
-    category: "frontend",
-    proficiency: 90,
-    description: "React framework for production"
-  },
-  { 
-    id: "vue", 
-    name: "Vue.js", 
-    icon: <SiJavascript className="text-green-400" />,
-    category: "frontend",
-    proficiency: 70,
-    description: "Progressive JavaScript framework"
-  },
-  { 
-    id: "angular", 
-    name: "Angular", 
-    icon: <SiJavascript className="text-red-500" />,
-    category: "frontend",
-    proficiency: 65,
-    description: "TypeScript-based framework"
-  },
-  { 
-    id: "zustand", 
-    name: "Zustand", 
-    icon: <SiJavascript className="text-yellow-300" />,
-    category: "frontend",
-    proficiency: 80,
-    description: "Lightweight state management"
-  },
-  { 
-    id: "javascript", 
-    name: "JavaScript", 
-    icon: <SiJavascript className="text-yellow-400" />,
-    category: "frontend",
-    proficiency: 95,
-    description: "Core web programming language"
-  },
-  { 
-    id: "typescript", 
-    name: "TypeScript", 
-    icon: <SiTypescript className="text-blue-500" />,
-    category: "frontend",
-    proficiency: 85,
-    description: "Typed JavaScript superset"
-  },
-  { 
-    id: "html", 
-    name: "HTML5", 
-    icon: <FaHtml5 className="text-orange-500" />,
-    category: "frontend",
-    proficiency: 98,
-    description: "Web markup language"
-  },
-  { 
-    id: "css", 
-    name: "CSS3", 
-    icon: <FaCss3Alt className="text-blue-500" />,
-    category: "frontend",
-    proficiency: 92,
-    description: "Web styling language"
-  },
-  { 
-    id: "tailwind", 
-    name: "TailwindCSS", 
-    icon: <SiTailwindcss className="text-cyan-400" />,
-    category: "frontend",
-    proficiency: 95,
-    description: "Utility-first CSS framework"
-  },
+  const sectionRef     = useRef(null);
+  const isInView       = useInView(sectionRef, { once: false, amount: 0.2 });
+  const [active, setActive] = useState("frontend");
 
-  // Backend
-  { 
-    id: "node", 
-    name: "Node.js", 
-    icon: <FaNodeJs className="text-green-500" />,
-    category: "backend",
-    proficiency: 90,
-    description: "JavaScript runtime"
-  },
-  { 
-    id: "express", 
-    name: "Express", 
-    icon: <SiExpress />,
-    category: "backend",
-    proficiency: 88,
-    description: "Minimal web framework for Node.js"
-  },
-  { 
-    id: "nestjs", 
-    name: "NestJS", 
-    icon: <SiJavascript className="text-red-400" />,
-    category: "backend",
-    proficiency: 75,
-    description: "Progressive Node.js framework"
-  },
-  { 
-    id: "websockets", 
-    name: "WebSockets", 
-    icon: <SiJavascript className="text-purple-400" />,
-    category: "backend",
-    proficiency: 85,
-    description: "Real-time communication protocol"
-  },
-  { 
-    id: "webrtc", 
-    name: "WebRTC", 
-    icon: <SiJavascript className="text-teal-400" />,
-    category: "backend",
-    proficiency: 80,
-    description: "Real-time audio/video communication"
-  },
-  { 
-    id: "microservices", 
-    name: "Microservices", 
-    icon: <SiJavascript className="text-indigo-400" />,
-    category: "backend",
-    proficiency: 75,
-    description: "Distributed service architecture"
-  },
-
-  // Languages
-  { 
-    id: "python", 
-    name: "Python (Django)", 
-    icon: <FaNodeJs className="text-blue-400" />,
-    category: "language",
-    proficiency: 70,
-    description: "Backend development with Django REST"
-  },
-  { 
-    id: "java", 
-    name: "Java", 
-    icon: <FaNodeJs className="text-red-400" />,
-    category: "language",
-    proficiency: 65,
-    description: "Object-oriented programming language"
-  },
-
-  // Databases
-  { 
-    id: "mongodb", 
-    name: "MongoDB", 
-    icon: <SiMongodb className="text-green-500" />,
-    category: "database",
-    proficiency: 85,
-    description: "NoSQL document database"
-  },
-  { 
-    id: "postgresql", 
-    name: "PostgreSQL", 
-    icon: <SiJavascript className="text-blue-400" />,
-    category: "database",
-    proficiency: 80,
-    description: "Relational SQL database"
-  },
-  { 
-    id: "mysql", 
-    name: "MySQL", 
-    icon: <SiJavascript className="text-blue-500" />,
-    category: "database",
-    proficiency: 75,
-    description: "Relational database system"
-  },
-  { 
-    id: "prisma", 
-    name: "Prisma ORM", 
-    icon: <SiJavascript className="text-purple-500" />,
-    category: "database",
-    proficiency: 80,
-    description: "Type-safe ORM for Node.js"
-  },
-
-  // Cloud / Platforms
-  { 
-    id: "aws", 
-    name: "AWS", 
-    icon: <SiFirebase className="text-orange-400" />,
-    category: "cloud",
-    proficiency: 70,
-    description: "Cloud computing platform"
-  },
-  { 
-    id: "gcp", 
-    name: "GCP", 
-    icon: <SiFirebase className="text-red-400" />,
-    category: "cloud",
-    proficiency: 65,
-    description: "Google Cloud Platform"
-  },
-  { 
-    id: "firebase", 
-    name: "Firebase", 
-    icon: <SiFirebase className="text-yellow-500" />,
-    category: "cloud",
-    proficiency: 82,
-    description: "Auth, DB, hosting & serverless tools"
-  },
-  { 
-    id: "railway", 
-    name: "Railway", 
-    icon: <SiJavascript className="text-gray-300" />,
-    category: "cloud",
-    proficiency: 70,
-    description: "App hosting & deployment"
-  },
-
-  // DevOps & Tools
-  { 
-    id: "docker", 
-    name: "Docker", 
-    icon: <SiJavascript className="text-blue-400" />,
-    category: "devops",
-    proficiency: 80,
-    description: "Containerization platform"
-  },
-  { 
-    id: "kubernetes", 
-    name: "Kubernetes", 
-    icon: <SiJavascript className="text-blue-500" />,
-    category: "devops",
-    proficiency: 60,
-    description: "Container orchestration"
-  },
-  { 
-    id: "github_actions", 
-    name: "GitHub Actions", 
-    icon: <SiGithub />,
-    category: "devops",
-    proficiency: 85,
-    description: "CI/CD automation"
-  },
-  { 
-    id: "gitlab_ci", 
-    name: "GitLab CI", 
-    icon: <SiGithub className="text-orange-400" />,
-    category: "devops",
-    proficiency: 75,
-    description: "Continuous integration pipeline"
-  },
-  { 
-    id: "linux", 
-    name: "Linux", 
-    icon: <SiGithub className="text-green-400" />,
-    category: "tools",
-    proficiency: 80,
-    description: "Operating system & CLI"
-  },
-  { 
-    id: "powershell", 
-    name: "PowerShell", 
-    icon: <SiGithub className="text-blue-300" />,
-    category: "tools",
-    proficiency: 70,
-    description: "Automation & scripting"
-  },
-
-  // Design
-  { 
-    id: "figma", 
-    name: "Figma", 
-    icon: <FaFigma className="text-purple-500" />,
-    category: "design",
-    proficiency: 90,
-    description: "Collaborative design tool"
-  },
-
-  // Tools (General)
-  { 
-    id: "vscode", 
-    name: "VS Code", 
-    icon: <SiVisualstudiocode className="text-blue-500" />,
-    category: "tools",
-    proficiency: 95,
-    description: "Code editor"
-  },
-  { 
-    id: "github", 
-    name: "GitHub", 
-    icon: <SiGithub />,
-    category: "tools",
-    proficiency: 92,
-    description: "Version control hosting"
-  }
-];
-
-  
-  // Filter technologies by active category
-  const filteredTechnologies = technologies.filter(
-    tech => tech.category === activeCategory
-  );
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3,
-      }
-    }
-  };
-  
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1,
-      transition: { duration: 0.5 }
-    }
-  };
-  
-  const titleVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.7, ease: "easeOut" }
-    }
-  };
-  
-  const tabVariants = {
-    inactive: { opacity: 0.7, scale: 0.95 },
-    active: { opacity: 1, scale: 1 }
-  };
+  const filtered = TECHNOLOGIES.filter(t => t.category === active);
 
   return (
-    <section 
+    <section
       ref={sectionRef}
-      className="relative overflow-hidden border-b border-neutral-800 py-10 lg:py-16"
-      id="technologies"
+      id="tech"
+      className="relative overflow-hidden border-b border-[rgba(0,255,65,0.08)] py-20 lg:py-28"
     >
-      {/* Background elements */}
-      <div className="absolute -right-32 top-0 -z-10 h-72 w-72 rounded-full bg-gradient-to-tr from-sky-700/10 to-transparent blur-3xl"></div>
-      <div className="absolute -left-32 bottom-0 -z-10 h-72 w-72 rounded-full bg-gradient-to-bl from-orange-700/10 to-transparent blur-3xl"></div>
-      
-      <div className="container mx-auto px-6">
-        {/* Section title */}
+      {/* Ambient blobs */}
+      <div
+        className="pointer-events-none absolute -right-32 top-0 -z-10 h-72 w-72 rounded-full opacity-10 blur-3xl"
+        style={{ background: "radial-gradient(circle, rgba(0,255,65,0.4) 0%, transparent 70%)" }}
+      />
+
+      <div className="container mx-auto px-4 sm:px-6">
+        {/* Header */}
         <motion.div
-          variants={titleVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="mb-8 text-center"
-        >
-          <h2 className="inline-block text-3xl font-light tracking-tight lg:text-4xl">
-            Technologies
-            <span className="font-medium text-neutral-400"> I Work With</span>
-          </h2>
-          <div className="mx-auto mt-3 h-1 w-16 rounded-full bg-gradient-to-r from-orange-500 to-sky-500"></div>
-          <p className="mx-auto mt-4 max-w-2xl text-neutral-400">
-            My tech stack is carefully selected to create powerful, scalable, and beautiful digital products.
-          </p>
-        </motion.div>
-        
-        {/* Category Tabs */}
-        <motion.div 
-          className="mx-auto mb-8 flex max-w-md flex-wrap justify-center gap-2 sm:gap-4"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.7 }}
+          className="mb-12 text-center"
         >
-          {techCategories.map((category) => (
-            <motion.button
-              key={category.id}
-              variants={tabVariants}
-              initial="inactive"
-              animate={activeCategory === category.id ? "active" : "inactive"}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setActiveCategory(category.id)}
-              className={`rounded-full px-6 py-2 text-sm font-medium transition-all sm:text-base ${
-                activeCategory === category.id
-                  ? "bg-gradient-to-r from-orange-500 to-sky-500 text-white shadow-lg"
-                  : "border border-neutral-700 bg-neutral-900/50 text-neutral-400 hover:border-neutral-600 hover:text-neutral-300"
+          <div className="mb-2 font-mono text-xs text-[#808080]">▶ ls -la tech_stack/</div>
+          <h2 className="section-title text-4xl font-extrabold lg:text-5xl">
+            <span className="text-[#e0e0e0]">Tech</span>
+            <span className="text-[#00ff41]" style={{ textShadow: "0 0 20px rgba(0,255,65,0.4)" }}>
+              {" "}Stack
+            </span>
+          </h2>
+          <div className="section-divider mx-auto mt-4 max-w-xs" />
+          <p className="mx-auto mt-4 max-w-xl font-mono text-sm text-[#808080]">
+            // Carefully selected tools to build performant, scalable products
+          </p>
+        </motion.div>
+
+        {/* Category tabs */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="mb-10 flex flex-wrap justify-center gap-2"
+        >
+          {TECH_CATEGORIES.map(cat => (
+            <button
+              key={cat.id}
+              onClick={() => setActive(cat.id)}
+              className={`rounded border px-5 py-2 font-mono text-xs transition-all ${
+                active === cat.id
+                  ? "border-[#00ff41] bg-[rgba(0,255,65,0.1)] text-[#00ff41]"
+                  : "border-[rgba(0,255,65,0.15)] bg-transparent text-[#808080] hover:border-[rgba(0,255,65,0.4)] hover:text-[#e0e0e0]"
               }`}
             >
-              {category.label}
-            </motion.button>
+              {active === cat.id && <span className="mr-1.5">▶</span>}
+              {cat.label}
+            </button>
           ))}
         </motion.div>
-        
-        {/* Technologies Grid */}
+
+        {/* Grid */}
         <motion.div
-          variants={containerVariants}
+          key={active}
+          variants={CONTAINER}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
           className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
         >
-          {filteredTechnologies.map((tech) => (
+          {filtered.map(tech => (
             <motion.div
               key={tech.id}
-              variants={itemVariants}
-              whileHover={{ 
-                y: -5, 
-                boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)"
+              variants={ITEM}
+              whileHover={{
+                y: -4,
+                borderColor: "rgba(0,255,65,0.4)",
+                boxShadow:   "0 0 16px rgba(0,255,65,0.1)",
               }}
-              className="flex flex-col items-center rounded-xl border border-neutral-800 bg-neutral-900/50 p-3 backdrop-blur-sm transition-colors hover:border-neutral-700"
+              className="terminal-card flex flex-col items-center rounded-lg p-4 cursor-default"
             >
               {/* Icon */}
-              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full border border-neutral-800 bg-neutral-900 text-3xl">
-                {tech.icon}
+              <div
+                className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg text-2xl"
+                style={{
+                  background: "rgba(0,255,65,0.05)",
+                  border:     "1px solid rgba(0,255,65,0.12)",
+                }}
+              >
+                {ICON_MAP[tech.id] ?? <SiJavascript className="text-[#808080]" />}
               </div>
-              
+
               {/* Name */}
-              <h3 className="mb-1 text-center font-medium">{tech.name}</h3>
-              
+              <h3 className="mb-1 text-center font-mono text-xs font-semibold text-[#e0e0e0]">
+                {tech.name}
+              </h3>
+
               {/* Description */}
-              <p className="mb-3 text-center text-xs text-neutral-500">{tech.description}</p>
-              
+              <p className="mb-3 text-center font-mono text-[10px] text-[#808080] leading-tight">
+                {tech.description}
+              </p>
+
               {/* Proficiency bar */}
               <div className="mt-auto w-full">
-                <div className="mb-1 flex justify-between text-xs">
-                  <span>Proficiency</span>
-                  <span>{tech.proficiency}%</span>
+                <div className="mb-1 flex justify-between font-mono text-[10px]">
+                  <span className="text-[#808080]">proficiency</span>
+                  <span className="text-[#00ff41]">{tech.proficiency}%</span>
                 </div>
-                <div className="h-1 w-full overflow-hidden rounded-full bg-neutral-800">
-                  <motion.div 
-                    className="h-full rounded-full bg-gradient-to-r from-orange-500 to-sky-500"
+                <div className="h-1 w-full overflow-hidden rounded-full bg-[rgba(255,255,255,0.05)]">
+                  <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${tech.proficiency}%` }}
-                    transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-                  ></motion.div>
+                    transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+                    className="h-full rounded-full"
+                    style={{
+                      background: "linear-gradient(to right, #00cc33, #00ff41)",
+                      boxShadow:  "0 0 6px rgba(0,255,65,0.5)",
+                    }}
+                  />
                 </div>
               </div>
             </motion.div>

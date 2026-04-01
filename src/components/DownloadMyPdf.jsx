@@ -1,141 +1,37 @@
-import { motion } from "framer-motion";
-import { HiOutlineDownload, HiOutlineDocumentText } from "react-icons/hi";
+import { motion } from "motion/react";
+import { HiOutlineDownload } from "react-icons/hi";
 import { useState } from "react";
 
 const DownloadPDFButton = () => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
-
-  // Animation variants
-  const buttonVariants = {
-    hidden: { 
-      opacity: 0,
-      y: 20
-    },
-    visible: { 
-      opacity: 1,
-      y: 0,
-      transition: { 
-        duration: 0.6, 
-        ease: [0.22, 1, 0.36, 1],
-        delay: 0.8
-      }
-    },
-    hover: {
-      scale: 1.05,
-      boxShadow: "0px 10px 20px rgba(234, 88, 12, 0.2)",
-      transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 10
-      }
-    },
-    tap: {
-      scale: 0.98
-    }
-  };
-
-  const iconVariants = {
-    hover: {
-      y: [0, -5, 0],
-      transition: {
-        duration: 1,
-        repeat: Infinity,
-        repeatType: "loop"
-      }
-    },
-    clicked: {
-      rotate: [0, 15, -15, 10, -10, 5, -5, 0],
-      transition: { duration: 0.5 }
-    }
-  };
+  const [clicked, setClicked] = useState(false);
 
   const handleDownload = () => {
-    // Show click animation
-    setIsClicked(true);
-    setTimeout(() => setIsClicked(false), 600);
-    
-    // Create download link from public folder (served at root)
-    const link = document.createElement("a");
-    link.href = "/my_resume.pdf";
-    link.download = "ILIAS_RADOUCHE_CV.pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    setClicked(true);
+    setTimeout(() => setClicked(false), 1200);
+    const a   = document.createElement("a");
+    a.href    = "/my_resume.pdf";
+    a.download = "ILIAS_RADOUCHE_CV.pdf";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   return (
-    <motion.div
-      variants={buttonVariants}
-      initial="hidden"
-      animate="visible"
-      whileHover="hover"
-      whileTap="tap"
-      className="relative inline-block"
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
+    <motion.button
+      onClick={handleDownload}
+      whileHover={{ scale: 1.04 }}
+      whileTap={{ scale: 0.97 }}
+      className="btn-terminal-solid inline-flex items-center gap-2 rounded px-6 py-3 font-mono text-sm font-bold"
     >
-      {/* Background gradient animation on hover */}
-      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 opacity-0 blur transition-opacity duration-300 group-hover:opacity-70"></div>
-      
-      <button
-        onClick={handleDownload}
-        className="relative flex items-center space-x-2 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-3 font-medium text-white shadow-lg transition-all hover:from-orange-600 hover:to-sky-500"
+      <motion.span
+        animate={clicked ? { rotate: [0, 15, -10, 5, 0] } : {}}
+        transition={{ duration: 0.5 }}
+        className="flex items-center"
       >
-        <motion.div
-          variants={iconVariants}
-          animate={isClicked ? "clicked" : isHovered ? "hover" : ""}
-          className="flex items-center"
-        >
-          {isClicked ? (
-            <HiOutlineDocumentText className="h-5 w-5" />
-          ) : (
-            <HiOutlineDownload className="h-5 w-5" />
-          )}
-        </motion.div>
-        <span>Download CV</span>
-        
-        {/* Subtle dot indicators */}
-        <div className="ml-1 flex space-x-1">
-          <motion.div 
-            animate={{ 
-              opacity: [0.4, 1, 0.4],
-              scale: [1, 1.2, 1]
-            }}
-            transition={{ 
-              duration: 1.5, 
-              repeat: Infinity,
-              delay: 0
-            }}
-            className="h-1 w-1 rounded-full bg-white"
-          ></motion.div>
-          <motion.div 
-            animate={{ 
-              opacity: [0.4, 1, 0.4],
-              scale: [1, 1.2, 1]
-            }}
-            transition={{ 
-              duration: 1.5, 
-              repeat: Infinity,
-              delay: 0.5
-            }}
-            className="h-1 w-1 rounded-full bg-white"
-          ></motion.div>
-          <motion.div 
-            animate={{ 
-              opacity: [0.4, 1, 0.4],
-              scale: [1, 1.2, 1]
-            }}
-            transition={{ 
-              duration: 1.5, 
-              repeat: Infinity,
-              delay: 1
-            }}
-            className="h-1 w-1 rounded-full bg-white"
-          ></motion.div>
-        </div>
-      </button>
-    </motion.div>
+        <HiOutlineDownload className="h-4 w-4" />
+      </motion.span>
+      {clicked ? "downloading..." : "Download CV"}
+    </motion.button>
   );
 };
 

@@ -1,82 +1,86 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
+import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
 
 const ParticlesBackground = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [engineReady, setEngineReady] = useState(false);
 
-  useEffect(() => {
-    // Set a flag to indicate component is mounted
-    setIsLoaded(true);
-    
-    return () => setIsLoaded(false);
-  }, []);
-
-  const particlesInit = useCallback(async (engine) => {
-    // This loads the tsparticles package bundle
-    await loadFull(engine);
-  }, []);
-
-  const particlesLoaded = useCallback(async (container) => {
-    console.log("Particles container loaded:", container);
-  }, []);
+  // Detect mobile for performance optimisation
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   const prefersReduced =
     typeof window !== "undefined" &&
-    window.matchMedia &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
-  // Always call hooks unconditionally in every render to avoid React hook order errors
+  // Initialise the v3 Slim engine (once per app lifecycle)
+  useEffect(() => {
+    initParticlesEngine(async engine => {
+      await loadSlim(engine);
+    }).then(() => setEngineReady(true));
+  }, []);
+
+  const particleCount = prefersReduced ? 8 : isMobile ? 25 : 60;
+  const particleSpeed = prefersReduced ? 0.2 : isMobile ? 0.4 : 0.6;
+
   const options = useMemo(() => ({
     fullScreen: false,
     background: { color: { value: "transparent" } },
-    fpsLimit: 60,
+    fpsLimit: isMobile ? 30 : 60,
     interactivity: {
       events: {
-        onClick: { enable: !prefersReduced, mode: "push" },
-        onHover: { enable: !prefersReduced, mode: "repulse", distance: 100 },
-        resize: true,
+        onHover: { enable: !prefersReduced && !isMobile, mode: "repulse" },
+        resize:  { enable: true },
       },
       modes: {
-        push: { quantity: 3 },
-        repulse: { distance: 100, duration: 0.4 },
+        repulse: { distance: 80, duration: 0.4 },
       },
     },
     particles: {
-      color: { value: ["#ea580c", "#0ea5e9", "#f97316"] },
-      links: { color: "#ffffff", distance: 150, enable: true, opacity: 0.15, width: 1 },
-      collisions: { enable: false },
-      move: {
-        direction: "none",
-        enable: true,
-        outModes: { default: "bounce" },
-        random: true,
-        speed: prefersReduced ? 1 : 2,
-        straight: false,
+      // Star-field: tiny white dots, very dim
+      color:  { value: ["#00ff41", "#ffffff", "#00cc33"] },
+      links:  {
+        enable:   true,
+        color:    "#00ff41",
+        distance: 120,
+        opacity:  0.07,
+        width:    0.8,
       },
-      number: { density: { enable: true, area: 800 }, value: prefersReduced ? 20 : 30 },
-      opacity: { value: 0.7 },
+      move: {
+        enable:   true,
+        speed:    particleSpeed,
+        direction:"none",
+        random:   true,
+        straight: false,
+        outModes: { default: "out" },
+      },
+      number: {
+        value: particleCount,
+        density: { enable: true, area: 900 },
+      },
+      opacity: {
+        value:     { min: 0.1, max: 0.5 },
+        animation: { enable: true, speed: 0.3, sync: false },
+      },
       shape: { type: "circle" },
-      size: { value: { min: 1, max: 3 } },
+      size:  {
+        value:     { min: 0.5, max: 2 },
+        animation: { enable: true, speed: 1, sync: false },
+      },
     },
     detectRetina: true,
-  }), [prefersReduced]);
+  }), [prefersReduced, isMobile, particleCount, particleSpeed]);
 
-  if (!isLoaded) return null;
+  const handleParticlesLoaded = useCallback(async () => {}, []);
+
+  if (!engineReady || prefersReduced) return null;
 
   return (
-    <div className="fixed inset-0 z-0">
+    <div className="fixed inset-0 z-0 pointer-events-none">
       <Particles
         id="tsparticles"
-        init={particlesInit}
-        loaded={particlesLoaded}
         options={options}
-        style={{
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-          zIndex: 0,
-        }}
+        particlesLoaded={handleParticlesLoaded}
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
       />
     </div>
   );

@@ -1,242 +1,180 @@
 import { useState, useRef } from "react";
-import { CONTACT } from "../constants";
-import { motion, useInView } from "framer-motion";
-import { HiOutlineMail, HiOutlinePhone, HiOutlineLocationMarker, HiOutlinePaperAirplane } from "react-icons/hi";
+import { motion, useInView } from "motion/react";
+import {
+  HiOutlineMail,
+  HiOutlinePhone,
+  HiOutlineLocationMarker,
+  HiOutlinePaperAirplane,
+} from "react-icons/hi";
 import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
+import { CONTACT, SOCIAL_LINKS } from "../data";
+
+const SOCIAL_META = {
+  LinkedIn:  { icon: <FaLinkedin />,       color: "hover:border-[#0077B5] hover:text-[#0077B5]" },
+  GitHub:    { icon: <FaGithub />,         color: "hover:border-[#e0e0e0] hover:text-[#e0e0e0]" },
+  Twitter:   { icon: <FaSquareXTwitter />, color: "hover:border-[#e0e0e0] hover:text-[#e0e0e0]" },
+  Instagram: { icon: <FaInstagram />,      color: "hover:border-pink-400 hover:text-pink-400"    },
+};
+
+const CONTAINER = {
+  hidden:  { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.2 } },
+};
+
+const ITEM = {
+  hidden:  { y: 20, opacity: 0 },
+  visible: { y: 0,  opacity: 1, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+};
 
 const ContactMe = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: ""
-  });
+  const [formData,     setFormData]     = useState({ name: "", email: "", subject: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-  
+  const [submitted,    setSubmitted]    = useState(false);
+
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: false, amount: 0.2 });
+  const isInView   = useInView(sectionRef, { once: false, amount: 0.15 });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
+  const handleChange  = e => setFormData(p => ({ ...p, [e.target.name]: e.target.value }));
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
+    await new Promise(r => setTimeout(r, 1400));
+    setIsSubmitting(false);
+    setSubmitted(true);
     setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitSuccess(true);
-      
-      // Reset form after success
-      setTimeout(() => {
-        setSubmitSuccess(false);
-        setFormData({
-          name: "",
-          email: "",
-          subject: "",
-          message: ""
-        });
-      }, 3000);
-    }, 1500);
+      setSubmitted(false);
+      setFormData({ name: "", email: "", subject: "", message: "" });
+    }, 3000);
   };
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      }
-    }
-  };
-  
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
-    }
-  };
-  
-  const titleVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.7, ease: "easeOut" }
-    }
-  };
-
-  // Social media links
-  const socialLinks = [
-    { 
-      name: "LinkedIn", 
-      icon: <FaLinkedin />, 
-      href: "https://www.linkedin.com/in/ilias-radouche",
-      color: "bg-[#0077B5]"
-    },
-    { 
-      name: "GitHub", 
-      icon: <FaGithub />, 
-      href: "https://github.com/iliasradouche",
-      color: "bg-[#333333]" 
-    },
-    { 
-      name: "Twitter", 
-      icon: <FaSquareXTwitter />, 
-      href: "https://twitter.com/Radoucheilias",
-      color: "bg-[#1DA1F2]" 
-    },
-    { 
-      name: "Instagram", 
-      icon: <FaInstagram />, 
-      href: "https://www.instagram.com/radouche__",
-      color: "bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#FCAF45]" 
-    }
-  ];
 
   return (
-    <section 
+    <section
       ref={sectionRef}
-      className="relative overflow-hidden border-b border-neutral-800 py-16 lg:py-24"
       id="contact"
+      className="relative overflow-hidden border-b border-[rgba(0,255,65,0.08)] py-20 lg:py-28"
     >
-      {/* Background elements */}
-      <div className="absolute -right-32 top-1/4 -z-10 h-96 w-96 rounded-full bg-gradient-to-tr from-orange-700/10 to-transparent blur-3xl"></div>
-      <div className="absolute -left-32 bottom-1/4 -z-10 h-96 w-96 rounded-full bg-gradient-to-bl from-sky-700/10 to-transparent blur-3xl"></div>
-      
-      <div className="container mx-auto px-6">
-        {/* Section title */}
+      {/* Ambient blob */}
+      <div
+        className="pointer-events-none absolute -right-40 top-1/4 -z-10 h-80 w-80 rounded-full opacity-10 blur-3xl"
+        style={{ background: "radial-gradient(circle, rgba(0,255,65,0.4) 0%, transparent 70%)" }}
+      />
+
+      <div className="container mx-auto px-4 sm:px-6">
+        {/* Header */}
         <motion.div
-          variants={titleVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.7 }}
           className="mb-16 text-center"
         >
-          <h2 className="inline-block text-4xl font-light tracking-tight lg:text-5xl">
-            Let's
-            <span className="font-medium text-neutral-400"> Connect</span>
+          <div className="mb-2 font-mono text-xs text-[#808080]">▶ ssh ilias@contact</div>
+          <h2 className="section-title text-4xl font-extrabold lg:text-5xl">
+            <span className="text-[#e0e0e0]">Let's</span>
+            <span className="text-[#00ff41]" style={{ textShadow: "0 0 20px rgba(0,255,65,0.4)" }}>
+              {" "}Connect
+            </span>
           </h2>
-          <div className="mx-auto mt-3 h-1 w-16 rounded-full bg-gradient-to-r from-orange-500 to-sky-500"></div>
-          <p className="mx-auto mt-4 max-w-2xl text-neutral-400">
-            Have a project in mind or just want to say hello? I'd love to hear from you.
+          <div className="section-divider mx-auto mt-4 max-w-xs" />
+          <p className="mx-auto mt-4 max-w-xl font-mono text-sm text-[#808080]">
+            // Have a project in mind? I'd love to hear from you.
           </p>
         </motion.div>
-        
-        <div className="grid gap-12 lg:grid-cols-2">
-          {/* Contact Information */}
+
+        <div className="grid gap-10 lg:grid-cols-2">
+          {/* ── Left: contact info ── */}
           <motion.div
-            variants={containerVariants}
+            variants={CONTAINER}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
-            className="flex flex-col space-y-8"
+            className="flex flex-col gap-8"
           >
-            <motion.div variants={itemVariants}>
-              <h3 className="mb-6 text-2xl font-medium">Get in Touch</h3>
-              <p className="mb-8 text-neutral-400">
-                Whether you have a question, a project proposal, or just want to connect, feel free to reach out. I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
+            <motion.div variants={ITEM}>
+              <div className="mb-2 font-mono text-xs text-[#00ff41]/60">// contact_info.json</div>
+              <h3 className="mb-4 font-mono text-xl font-bold text-[#e0e0e0]">Get in Touch</h3>
+              <p className="font-mono text-sm leading-relaxed text-[#808080]">
+                Whether you have a question, a project proposal, or just want to connect — feel free to reach out. I'm always open to discussing new projects, creative ideas, or opportunities.
               </p>
             </motion.div>
-            
-            {/* Contact Details */}
-            <motion.div 
-              variants={itemVariants}
-              className="space-y-6"
-            >
-              {/* Email */}
-              <div className="flex items-start">
-                <div className="mr-4 rounded-full bg-gradient-to-r from-orange-500/20 to-sky-500/20 p-3">
-                  <HiOutlineMail className="h-6 w-6 text-orange-400" />
-                </div>
-                <div>
-                  <h4 className="font-medium">Email</h4>
-                  <a 
-                    href={`mailto:${CONTACT.email}`} 
-                    className="text-neutral-400 transition-colors hover:text-orange-400"
+
+            {/* Contact details */}
+            <motion.div variants={ITEM} className="space-y-4">
+              {[
+                { icon: <HiOutlineMail         className="h-5 w-5" />, label: "Email",    value: CONTACT.email,   href: `mailto:${CONTACT.email}` },
+                { icon: <HiOutlinePhone         className="h-5 w-5" />, label: "Phone",    value: CONTACT.phone,   href: `tel:${CONTACT.phone}`     },
+                { icon: <HiOutlineLocationMarker className="h-5 w-5" />, label: "Location", value: CONTACT.address, href: null                        },
+              ].map(item => (
+                <div key={item.label} className="flex items-start gap-4">
+                  <div
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded"
+                    style={{
+                      border:     "1px solid rgba(0,255,65,0.2)",
+                      background: "rgba(0,255,65,0.06)",
+                      color:      "#00ff41",
+                    }}
                   >
-                    {CONTACT.email}
-                  </a>
+                    {item.icon}
+                  </div>
+                  <div>
+                    <div className="font-mono text-xs text-[#808080]">{item.label}</div>
+                    {item.href ? (
+                      <a
+                        href={item.href}
+                        className="font-mono text-sm text-[#e0e0e0] transition-colors hover:text-[#00ff41]"
+                      >
+                        {item.value}
+                      </a>
+                    ) : (
+                      <p className="font-mono text-sm text-[#e0e0e0]">{item.value}</p>
+                    )}
+                  </div>
                 </div>
-              </div>
-              
-              {/* Phone */}
-              <div className="flex items-start">
-                <div className="mr-4 rounded-full bg-gradient-to-r from-orange-500/20 to-sky-500/20 p-3">
-                  <HiOutlinePhone className="h-6 w-6 text-sky-400" />
-                </div>
-                <div>
-                  <h4 className="font-medium">Phone</h4>
-                  <a 
-                    href={`tel:${CONTACT.phone}`} 
-                    className="text-neutral-400 transition-colors hover:text-sky-400"
-                  >
-                    {CONTACT.phone}
-                  </a>
-                </div>
-              </div>
-              
-              {/* Location */}
-              <div className="flex items-start">
-                <div className="mr-4 rounded-full bg-gradient-to-r from-orange-500/20 to-sky-500/20 p-3">
-                  <HiOutlineLocationMarker className="h-6 w-6 text-orange-400" />
-                </div>
-                <div>
-                  <h4 className="font-medium">Location</h4>
-                  <p className="text-neutral-400">{CONTACT.address}</p>
-                </div>
-              </div>
+              ))}
             </motion.div>
-            
-            {/* Social Media */}
-            <motion.div variants={itemVariants} className="mt-8">
-              <h4 className="mb-4 font-medium">Connect on Social Media</h4>
+
+            {/* Social icons */}
+            <motion.div variants={ITEM}>
+              <div className="mb-3 font-mono text-xs text-[#808080]">// follow me</div>
               <div className="flex flex-wrap gap-3">
-                {socialLinks.map((social) => (
+                {SOCIAL_LINKS.map(s => (
                   <motion.a
-                    key={social.name}
-                    href={social.href}
+                    key={s.name}
+                    href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`flex h-10 w-10 items-center justify-center rounded-full text-white transition-transform hover:scale-110 ${social.color}`}
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    whileTap={{ scale: 0.9 }}
-                    aria-label={social.name}
+                    aria-label={s.name}
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`flex h-10 w-10 items-center justify-center rounded border border-[rgba(0,255,65,0.15)] bg-[rgba(0,255,65,0.04)] text-[#808080] transition-all ${SOCIAL_META[s.name]?.color}`}
                   >
-                    {social.icon}
+                    {SOCIAL_META[s.name]?.icon}
                   </motion.a>
                 ))}
               </div>
             </motion.div>
           </motion.div>
-          
-          {/* Contact Form */}
+
+          {/* ── Right: contact form ── */}
           <motion.div
-            variants={containerVariants}
+            variants={CONTAINER}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
-            className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6 backdrop-blur-sm lg:p-8"
+            className="terminal-card rounded-lg p-6 lg:p-8"
           >
-            <motion.h3 
-              variants={itemVariants}
-              className="mb-6 text-2xl font-medium"
-            >
+            <motion.div variants={ITEM} className="mb-2 font-mono text-xs text-[#00ff41]/60">
+              // send_message.sh
+            </motion.div>
+            <motion.h3 variants={ITEM} className="mb-6 font-mono text-xl font-bold text-[#e0e0e0]">
               Send a Message
             </motion.h3>
-            
-            <form onSubmit={handleSubmit}>
-              <div className="mb-8 grid gap-6 md:grid-cols-2">
-                {/* Name */}
-                <motion.div variants={itemVariants}>
-                  <label htmlFor="name" className="mb-2 block text-sm font-medium text-neutral-400">
-                    Your Name
+
+            <form onSubmit={handleSubmit} noValidate>
+              {/* Name + Email row */}
+              <motion.div variants={ITEM} className="mb-5 grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label htmlFor="name" className="mb-1.5 block font-mono text-xs text-[#808080]">
+                    <span className="text-[#00ff41]/60">$ </span>your_name
                   </label>
                   <input
                     type="text"
@@ -245,15 +183,14 @@ const ContactMe = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full rounded-lg border border-neutral-700 bg-neutral-800/50 p-3 text-neutral-200 outline-none transition-colors focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50"
-                    placeholder="Your name"
+                    placeholder="Ilias Radouche"
+                    className="terminal-input"
+                    autoComplete="name"
                   />
-                </motion.div>
-                
-                {/* Email */}
-                <motion.div variants={itemVariants}>
-                  <label htmlFor="email" className="mb-2 block text-sm font-medium text-neutral-400">
-                    Your Email
+                </div>
+                <div>
+                  <label htmlFor="email" className="mb-1.5 block font-mono text-xs text-[#808080]">
+                    <span className="text-[#00ff41]/60">$ </span>your_email
                   </label>
                   <input
                     type="email"
@@ -262,16 +199,17 @@ const ContactMe = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full rounded-lg border border-neutral-700 bg-neutral-800/50 p-3 text-neutral-200 outline-none transition-colors focus:border-sky-500/50 focus:ring-1 focus:ring-sky-500/50"
-                    placeholder="youremail@example.com"
+                    placeholder="you@example.com"
+                    className="terminal-input"
+                    autoComplete="email"
                   />
-                </motion.div>
-              </div>
-              
+                </div>
+              </motion.div>
+
               {/* Subject */}
-              <motion.div variants={itemVariants} className="mb-6">
-                <label htmlFor="subject" className="mb-2 block text-sm font-medium text-neutral-400">
-                  Subject
+              <motion.div variants={ITEM} className="mb-5">
+                <label htmlFor="subject" className="mb-1.5 block font-mono text-xs text-[#808080]">
+                  <span className="text-[#00ff41]/60">$ </span>subject
                 </label>
                 <input
                   type="text"
@@ -280,15 +218,15 @@ const ContactMe = () => {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full rounded-lg border border-neutral-700 bg-neutral-800/50 p-3 text-neutral-200 outline-none transition-colors focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50"
                   placeholder="Project Discussion"
+                  className="terminal-input"
                 />
               </motion.div>
-              
+
               {/* Message */}
-              <motion.div variants={itemVariants} className="mb-8">
-                <label htmlFor="message" className="mb-2 block text-sm font-medium text-neutral-400">
-                  Your Message
+              <motion.div variants={ITEM} className="mb-6">
+                <label htmlFor="message" className="mb-1.5 block font-mono text-xs text-[#808080]">
+                  <span className="text-[#00ff41]/60">$ </span>message
                 </label>
                 <textarea
                   id="message"
@@ -297,41 +235,41 @@ const ContactMe = () => {
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  className="w-full rounded-lg border border-neutral-700 bg-neutral-800/50 p-3 text-neutral-200 outline-none transition-colors focus:border-sky-500/50 focus:ring-1 focus:ring-sky-500/50"
                   placeholder="I'd like to discuss a potential project..."
-                ></textarea>
+                  className="terminal-input resize-none"
+                />
               </motion.div>
-              
-              {/* Submit Button */}
-              <motion.div variants={itemVariants} className="text-center">
+
+              {/* Submit */}
+              <motion.div variants={ITEM}>
                 <button
                   type="submit"
-                  disabled={isSubmitting || submitSuccess}
-                  className={`inline-flex items-center justify-center rounded-full px-8 py-3 font-medium text-white shadow-lg transition-all ${
-                    submitSuccess
-                      ? "bg-green-600"
-                      : "bg-gradient-to-r from-orange-500 to-sky-500 hover:from-orange-600 hover:to-sky-600"
+                  disabled={isSubmitting || submitted}
+                  className={`inline-flex w-full items-center justify-center gap-2 rounded px-6 py-3 font-mono text-sm font-bold transition-all ${
+                    submitted
+                      ? "cursor-default border border-[#00ff41] bg-[rgba(0,255,65,0.1)] text-[#00ff41]"
+                      : "btn-terminal-solid"
                   }`}
                 >
                   {isSubmitting ? (
                     <>
-                      <svg className="mr-2 h-5 w-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                       </svg>
-                      Sending...
+                      transmitting...
                     </>
-                  ) : submitSuccess ? (
+                  ) : submitted ? (
                     <>
-                      <svg className="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                       </svg>
-                      Message Sent!
+                      message_sent ✓
                     </>
                   ) : (
                     <>
-                      <HiOutlinePaperAirplane className="mr-2 h-5 w-5 rotate-45" />
-                      Send Message
+                      <HiOutlinePaperAirplane className="h-4 w-4 rotate-45" />
+                      send_message()
                     </>
                   )}
                 </button>

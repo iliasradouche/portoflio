@@ -1,145 +1,147 @@
 import { useRef } from "react";
-import { EXPERIENCES } from "../constants";
-import { motion, useInView } from "framer-motion";
-import { HiOutlineBriefcase, HiOutlineCalendar, HiOutlineLocationMarker } from "react-icons/hi";
+import { motion, useInView } from "motion/react";
+import {
+  HiOutlineBriefcase,
+  HiOutlineCalendar,
+  HiOutlineLocationMarker,
+} from "react-icons/hi";
+import { EXPERIENCES } from "../data";
+
+const CONTAINER = {
+  hidden:  { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+};
+
+const ITEM = {
+  hidden:  { y: 30, opacity: 0 },
+  visible: { y: 0,  opacity: 1,  transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+};
 
 const Experience = () => {
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: false, amount: 0.2 });
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3,
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1,
-      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
-    }
-  };
-
-  const titleVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.7, ease: "easeOut" }
-    }
-  };
+  const isInView   = useInView(sectionRef, { once: false, amount: 0.15 });
 
   return (
-    <section 
+    <section
       ref={sectionRef}
-      className="relative overflow-hidden border-b border-neutral-800 py-16 lg:py-24"
       id="experience"
+      className="relative overflow-hidden border-b border-[rgba(0,255,65,0.08)] py-20 lg:py-28"
     >
-      {/* Background elements */}
-      <div className="absolute -left-64 top-1/4 -z-10 h-96 w-96 rounded-full bg-gradient-to-tr from-orange-700/10 to-transparent blur-3xl"></div>
-      <div className="absolute -right-64 bottom-1/4 -z-10 h-96 w-96 rounded-full bg-gradient-to-bl from-sky-700/10 to-transparent blur-3xl"></div>
-      
-      <div className="container mx-auto px-6">
-        {/* Section title */}
+      {/* Ambient blob */}
+      <div
+        className="pointer-events-none absolute -left-40 top-1/4 -z-10 h-80 w-80 rounded-full opacity-10 blur-3xl"
+        style={{ background: "radial-gradient(circle, rgba(0,255,65,0.4) 0%, transparent 70%)" }}
+      />
+
+      <div className="container mx-auto px-4 sm:px-6">
+        {/* Header */}
         <motion.div
-          variants={titleVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.7 }}
           className="mb-16 text-center"
         >
-          <h2 className="inline-block text-4xl font-light tracking-tight lg:text-5xl">
-            Professional
-            <span className="font-medium text-neutral-400"> Experience</span>
+          <div className="mb-2 font-mono text-xs text-[#808080]">▶ git log --oneline jobs.log</div>
+          <h2 className="section-title text-4xl font-extrabold lg:text-5xl">
+            <span className="text-[#e0e0e0]">Professional</span>
+            <span className="text-[#00ff41]" style={{ textShadow: "0 0 20px rgba(0,255,65,0.4)" }}>
+              {" "}Experience
+            </span>
           </h2>
-          <div className="mx-auto mt-3 h-1 w-16 rounded-full bg-gradient-to-r from-orange-500 to-sky-500"></div>
-          <p className="mx-auto mt-4 max-w-2xl text-neutral-400">
-            My professional journey and the impactful roles that have shaped my expertise
+          <div className="section-divider mx-auto mt-4 max-w-xs" />
+          <p className="mx-auto mt-4 max-w-xl font-mono text-sm text-[#808080]">
+            // Roles that shaped my technical expertise and professional growth
           </p>
         </motion.div>
-        
-        {/* Zigzag Experience Layout */}
-        <div className="relative mx-auto">
+
+        {/* Timeline */}
+        <div className="relative mx-auto max-w-4xl">
+          {/* Vertical line */}
+          <div
+            className="absolute left-6 top-0 hidden h-full w-px lg:block"
+            style={{ background: "linear-gradient(to bottom, transparent, rgba(0,255,65,0.2), transparent)" }}
+          />
+
           <motion.div
-            variants={containerVariants}
+            variants={CONTAINER}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
-            className="grid grid-cols-1 gap-16 lg:grid-cols-2"
+            className="space-y-8"
           >
-            {EXPERIENCES.map((experience, index) => (
-              <motion.div 
-                key={index}
-                variants={itemVariants}
-                className={`relative ${
-                  index % 2 === 0 
-                    ? "lg:justify-self-end" 
-                    : "lg:justify-self-start"
-                }`}
+            {EXPERIENCES.map((exp, idx) => (
+              <motion.div
+                key={idx}
+                variants={ITEM}
+                className="relative flex flex-col gap-4 lg:flex-row lg:gap-8"
               >
-                {/* Card content */}
-                <motion.div
-                  whileHover={{ y: -5, boxShadow: "0 20px 25px -5px rgba(0,0,0,0.2)" }}
-                  className="overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/70 backdrop-blur-sm"
-                >
-                  {/* Header with gradient */}
-                  <div className="border-b border-neutral-800 bg-gradient-to-r from-orange-950/20 to-sky-950/20 p-5">
-                    <div className="flex items-center">
-                      <div className="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-orange-500/20 to-sky-500/20">
-                        <HiOutlineBriefcase className="h-6 w-6 text-orange-500" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold">{experience.role}</h3>
-                        <p className="text-base text-orange-300">{experience.company}</p>
-                      </div>
-                    </div>
+                {/* Timeline dot */}
+                <div className="hidden lg:flex flex-col items-center pt-6">
+                  <div
+                    className="z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
+                    style={{
+                      border:     "1px solid rgba(0,255,65,0.3)",
+                      background: "rgba(0,255,65,0.08)",
+                      boxShadow:  "0 0 12px rgba(0,255,65,0.2)",
+                    }}
+                  >
+                    <HiOutlineBriefcase className="h-4 w-4 text-[#00ff41]" />
                   </div>
-                  
-                  {/* Main content */}
-                  <div className="p-5">
-                    {/* Time and location */}
-                    <div className="mb-4 flex flex-wrap gap-4 text-sm text-neutral-400">
-                      <div className="flex items-center">
-                        <HiOutlineCalendar className="mr-1 h-4 w-4" />
-                        {experience.year}
-                      </div>
-                      {experience.location && (
-                        <div className="flex items-center">
-                          <HiOutlineLocationMarker className="mr-1 h-4 w-4" />
-                          {experience.location}
-                        </div>
+                </div>
+
+                {/* Card */}
+                <motion.div
+                  whileHover={{
+                    y: -3,
+                    borderColor: "rgba(0,255,65,0.3)",
+                    boxShadow:   "0 0 20px rgba(0,255,65,0.08)",
+                  }}
+                  className="terminal-card flex-1 overflow-hidden rounded-lg transition-all"
+                >
+                  {/* Card header */}
+                  <div
+                    className="border-b px-5 py-4"
+                    style={{
+                      borderColor: "rgba(0,255,65,0.08)",
+                      background:  "rgba(0,255,65,0.03)",
+                    }}
+                  >
+                    {/* Year pill */}
+                    <div className="mb-2 inline-flex items-center gap-1.5">
+                      <span
+                        className="rounded px-2 py-0.5 font-mono text-xs"
+                        style={{
+                          border:     "1px solid rgba(0,255,65,0.2)",
+                          background: "rgba(0,255,65,0.06)",
+                          color:      "#00ff41",
+                        }}
+                      >
+                        <HiOutlineCalendar className="mr-1 inline h-3 w-3" />
+                        {exp.year}
+                      </span>
+                      {exp.location && (
+                        <span className="font-mono text-xs text-[#808080]">
+                          <HiOutlineLocationMarker className="mr-0.5 inline h-3 w-3" />
+                          {exp.location}
+                        </span>
                       )}
                     </div>
-                    
-                    {/* Description */}
-                    <p className="mb-5 text-neutral-300">{experience.description}</p>
-                    
-                    {/* Achievements list - added feature */}
-                    {experience.achievements && (
-                      <div className="mb-5">
-                        <h4 className="mb-2 font-medium text-orange-300">Key Achievements:</h4>
-                        <ul className="list-inside list-disc space-y-1 text-sm text-neutral-400">
-                          {experience.achievements.map((achievement, idx) => (
-                            <li key={idx}>{achievement}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                    
-                    {/* Technologies */}
+
+                    <h3 className="font-mono text-base font-bold text-[#e0e0e0] sm:text-lg">
+                      {exp.role}
+                    </h3>
+                    <p className="font-mono text-sm text-[#00ff41]/80">{exp.company}</p>
+                  </div>
+
+                  {/* Card body */}
+                  <div className="px-5 py-4">
+                    <p className="mb-4 font-mono text-sm leading-relaxed text-[#808080]">
+                      {exp.description}
+                    </p>
+
+                    {/* Tech badges */}
                     <div className="flex flex-wrap gap-2">
-                      {experience.technologies.map((tech, techIndex) => (
-                        <span
-                          key={techIndex}
-                          className="rounded-full bg-gradient-to-r from-orange-950 to-sky-950 px-3 py-1 text-xs font-medium text-orange-300"
-                        >
-                          {tech}
-                        </span>
+                      {exp.technologies.map((tech, ti) => (
+                        <span key={ti} className="tech-badge">{tech}</span>
                       ))}
                     </div>
                   </div>
@@ -148,25 +150,21 @@ const Experience = () => {
             ))}
           </motion.div>
         </div>
-        
-        {/* Call to action */}
+
+        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.7, delay: 0.5 }}
+          transition={{ duration: 0.7, delay: 0.6 }}
           className="mt-12 text-center"
         >
-          <a 
-            href="#" 
-            target="_blank" 
+          <a
+            href="https://www.linkedin.com/in/ilias-radouche"
+            target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center rounded-full border border-neutral-700 bg-neutral-900/50 px-6 py-3 text-sm font-medium text-neutral-300 transition hover:bg-neutral-800 hover:text-white"
+            className="btn-terminal inline-flex items-center gap-2 rounded px-6 py-3"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-              <rect x="2" y="9" width="4" height="12"></rect>
-              <circle cx="4" cy="4" r="2"></circle>
-            </svg>
+            <span className="text-[#00ff41]">▶</span>
             Full Resume on LinkedIn
           </a>
         </motion.div>

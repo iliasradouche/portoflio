@@ -1,22 +1,19 @@
 import { useEffect, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "motion/react";
 
 const BackToTop = () => {
-  const [visible, setVisible] = useState(false);
-  const shouldReduceMotion = useReducedMotion();
+  const [visible,     setVisible]     = useState(false);
+  const shouldReduce = useReducedMotion();
 
   useEffect(() => {
-    const onScroll = () => {
-      setVisible(window.scrollY > 500);
-    };
+    const onScroll = () => setVisible(window.scrollY > 500);
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const handleClick = () => {
-    const behavior = shouldReduceMotion ? "auto" : "smooth";
-    window.scrollTo({ top: 0, behavior });
+    window.scrollTo({ top: 0, behavior: shouldReduce ? "auto" : "smooth" });
   };
 
   return (
@@ -25,31 +22,31 @@ const BackToTop = () => {
       aria-label="Back to top"
       onClick={handleClick}
       initial={false}
-      animate={
-        visible
-          ? { opacity: 1, scale: shouldReduceMotion ? 1 : 1 }
-          : { opacity: 0, scale: shouldReduceMotion ? 1 : 0.95 }
-      }
-      transition={{ duration: shouldReduceMotion ? 0 : 0.25 }}
-      className="fixed bottom-6 right-6 z-50 rounded-full bg-gradient-to-r from-orange-500 to-sky-500 p-3 text-white shadow-lg outline-none ring-0 focus-visible:ring-2 focus-visible:ring-orange-400"
+      animate={{
+        opacity: visible ? 1 : 0,
+        scale:   visible ? 1 : 0.8,
+        y:       visible ? 0 : 10,
+      }}
+      transition={{ duration: shouldReduce ? 0 : 0.2 }}
+      className="fixed bottom-6 right-6 z-50 flex h-11 w-11 items-center justify-center rounded border text-sm font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00ff41]"
+      style={{
+        borderColor: "rgba(0,255,65,0.4)",
+        background:  "rgba(0,255,65,0.08)",
+        color:       "#00ff41",
+        backdropFilter: "blur(8px)",
+        fontFamily:  "'JetBrains Mono', monospace",
+        boxShadow:   visible ? "0 0 15px rgba(0,255,65,0.2)" : "none",
+      }}
+      tabIndex={visible ? 0 : -1}
     >
-      <motion.svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-        animate={shouldReduceMotion ? {} : { y: [0, -2, 0] }}
-        transition={shouldReduceMotion ? {} : { duration: 1.2, repeat: Infinity }}
-        className="drop-shadow"
+      <motion.span
+        animate={shouldReduce ? {} : { y: [0, -3, 0] }}
+        transition={{ duration: 1.5, repeat: Infinity }}
       >
-        <path d="M12 19V5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        <path d="M5 12l7-7 7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      </motion.svg>
+        ↑
+      </motion.span>
     </motion.button>
   );
 };
 
 export default BackToTop;
-

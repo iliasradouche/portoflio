@@ -1,33 +1,327 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
-:root{
-    font-family:"Inter", sans-serif;
+/* ============================
+   CSS CUSTOM PROPERTIES
+   ============================ */
+:root {
+  --navbar-offset: 5rem;
+  --green: #00ff41;
+  --green-dim: #00cc33;
+  --green-glow: rgba(0, 255, 65, 0.15);
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --border: rgba(0, 255, 65, 0.12);
+  --text: #e0e0e0;
+  --muted: #808080;
 }
+
+/* ============================
+   BASE RESET & TYPOGRAPHY
+   ============================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    html {
-        scroll-behavior: auto;
-    }
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; }
 }
 
-/* Offset anchored sections for the fixed navbar */
-:root {
-    --navbar-offset: 6rem; /* adjust to actual header height */
-}
-
+/* ============================
+   SCROLL MARGIN OFFSETS
+   ============================ */
 #about,
+#tech,
 #experience,
 #projects,
 #certificates,
 #contact {
   scroll-margin-top: var(--navbar-offset);
 }
- 
+
+/* ============================
+   BLINKING CURSOR ANIMATION
+   ============================ */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.cursor-blink {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background-color: var(--green);
+  margin-left: 3px;
+  vertical-align: middle;
+  animation: blink 1s step-end infinite;
+  box-shadow: 0 0 8px var(--green);
+}
+
+/* ============================
+   SCANLINE OVERLAY (CSS only)
+   ============================ */
+@keyframes scanMove {
+  0%   { top: -10%; }
+  100% { top: 110%; }
+}
+
+.scanline-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  /* Horizontal scan lines texture */
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.04) 2px,
+    rgba(0, 0, 0, 0.04) 4px
+  );
+}
+
+.scanline-overlay::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 255, 65, 0.015),
+    transparent
+  );
+  animation: scanMove 12s linear infinite;
+}
+
+/* ============================
+   NOISE / GRAIN OVERLAY
+   ============================ */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9997;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* ============================
+   TERMINAL PROMPT DECORATIONS
+   ============================ */
+.prompt-symbol {
+  color: var(--green);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  text-shadow: 0 0 8px var(--green);
+  margin-right: 0.5rem;
+  user-select: none;
+}
+
+/* ============================
+   CARD STYLES
+   ============================ */
+.terminal-card {
+  border: 1px solid var(--border);
+  background: rgba(17, 17, 17, 0.8);
+  backdrop-filter: blur(12px);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.terminal-card:hover {
+  border-color: rgba(0, 255, 65, 0.25);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.06);
+}
+
+/* ============================
+   SECTION HEADINGS
+   ============================ */
+.section-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.section-divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(0, 255, 65, 0.4),
+    rgba(0, 255, 65, 0.2),
+    transparent
+  );
+}
+
+/* ============================
+   GREEN GLOW UTILITIES
+   ============================ */
+.text-glow-green {
+  text-shadow:
+    0 0 10px rgba(0, 255, 65, 0.6),
+    0 0 20px rgba(0, 255, 65, 0.3),
+    0 0 40px rgba(0, 255, 65, 0.1);
+}
+
+.border-glow-green {
+  box-shadow:
+    0 0 0 1px rgba(0, 255, 65, 0.2),
+    inset 0 0 20px rgba(0, 255, 65, 0.03);
+}
+
+/* ============================
+   BUTTON BASE
+   ============================ */
+.btn-terminal {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  padding: 0.6rem 1.5rem;
+  border: 1px solid rgba(0, 255, 65, 0.4);
+  background: rgba(0, 255, 65, 0.05);
+  color: var(--green);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-shadow: 0 0 8px rgba(0, 255, 65, 0.4);
+}
+
+.btn-terminal:hover {
+  background: rgba(0, 255, 65, 0.1);
+  border-color: rgba(0, 255, 65, 0.7);
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+}
+
+.btn-terminal-solid {
+  background: var(--green);
+  color: #0a0a0a;
+  border-color: var(--green);
+  font-weight: 700;
+  text-shadow: none;
+}
+
+.btn-terminal-solid:hover {
+  background: #00cc33;
+  border-color: #00cc33;
+  box-shadow: 0 0 25px rgba(0, 255, 65, 0.4);
+}
+
+/* ============================
+   TECH BADGE
+   ============================ */
+.tech-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.65rem;
+  border: 1px solid rgba(0, 255, 65, 0.2);
+  background: rgba(0, 255, 65, 0.05);
+  color: var(--green);
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+/* ============================
+   CUSTOM SCROLLBAR
+   ============================ */
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: var(--bg); }
+::-webkit-scrollbar-thumb  { background: rgba(0, 255, 65, 0.25); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 255, 65, 0.5); }
+
+/* Firefox */
+* { scrollbar-width: thin; scrollbar-color: rgba(0, 255, 65, 0.25) transparent; }
+
+/* ============================
+   TEXT SELECTION
+   ============================ */
+::selection {
+  background-color: rgba(0, 255, 65, 0.25);
+  color: #ffffff;
+}
+
+/* ============================
+   FORM INPUTS
+   ============================ */
+.terminal-input {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 255, 65, 0.15);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.terminal-input::placeholder {
+  color: rgba(128, 128, 128, 0.6);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.terminal-input:focus {
+  border-color: rgba(0, 255, 65, 0.5);
+  box-shadow: 0 0 0 2px rgba(0, 255, 65, 0.08);
+}
+
+/* ============================
+   PROFILE IMAGE FRAME
+   ============================ */
+.profile-frame {
+  position: relative;
+  padding: 3px;
+  background: linear-gradient(135deg, rgba(0, 255, 65, 0.5), rgba(0, 255, 65, 0.1));
+  border-radius: 12px;
+}
+
+.profile-frame::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, rgba(0, 255, 65, 0.4), transparent 50%, rgba(0, 255, 65, 0.1));
+  z-index: -1;
+}
+
+/* ============================
+   GRID OVERLAY (decorative)
+   ============================ */
+.grid-overlay {
+  background-image:
+    linear-gradient(to right, rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ============================
+   SWIPER OVERRIDES
+   ============================ */
+.swiper-pagination-bullet {
+  background: rgba(0, 255, 65, 0.4) !important;
+}
+.swiper-pagination-bullet-active {
+  background: var(--green) !important;
+  box-shadow: 0 0 8px rgba(0, 255, 65, 0.6);
+}
