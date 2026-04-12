@@ -77,6 +77,21 @@ body {
   box-shadow: 0 0 8px var(--green);
 }
 
+@keyframes pulse-glow {
+  0%   { transform: translateX(-100%); opacity: 0; }
+  45%  { opacity: 0.15; }
+  55%  { opacity: 0.15; }
+  100% { transform: translateX(300%); opacity: 0; }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s infinite linear;
+}
+
+.animate-blink {
+  animation: blink 0.8s step-end infinite;
+}
+
 /* ============================
    SCANLINE OVERLAY (CSS only)
    ============================ */
