@@ -176,6 +176,56 @@ body {
 }
 
 /* ============================
+   KAWE-STYLE CARD / PAGE TOKENS
+   ============================ */
+.section-card {
+  border: 1px solid rgba(0, 255, 65, 0.1);
+  background: rgba(17, 17, 17, 0.85);
+  backdrop-filter: blur(12px);
+  border-radius: 1rem;
+  padding: 2rem;
+  transition: border-color 0.2s ease;
+}
+
+.section-card:hover {
+  border-color: rgba(0, 255, 65, 0.2);
+}
+
+.page-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(0, 255, 65, 0.5);
+}
+
+.page-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: #e0e0e0;
+  letter-spacing: -0.03em;
+}
+
+.social-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid rgba(0, 255, 65, 0.18);
+  border-radius: 9999px;
+  color: #808080;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.social-pill:hover {
+  border-color: rgba(0, 255, 65, 0.5);
+  color: #00ff41;
+}
+
+
+/* ============================
    GREEN GLOW UTILITIES
    ============================ */
 .text-glow-green {

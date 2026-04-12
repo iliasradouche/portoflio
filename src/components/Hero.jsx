@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, useReducedMotion } from "motion/react";
+import { Link } from "react-router-dom";
 import { useTypewriter } from "react-simple-typewriter";
 import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
@@ -156,13 +157,13 @@ const Hero = () => {
                 <HiOutlineDownload className="h-4 w-4" />
                 Download CV
               </button>
-              <a
-                href="#contact"
+              <Link
+                to="/about"
                 className="btn-terminal flex items-center gap-2 rounded px-5 py-2.5"
               >
                 Let's Work Together
                 <HiArrowRight className="h-4 w-4" />
-              </a>
+              </Link>
             </div>
           </div>
         </motion.div>
